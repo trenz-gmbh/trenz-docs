@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <ais-instant-search :search-client="client" index-name="files">
+      <ais-search-box />
+      <ais-hits>
+        <template v-slot:item="{ item }">
+          <h2>{{ item.name }}</h2>
+        </template>
+      </ais-hits>
+    </ais-instant-search>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 
 @Options({
-  components: {
-    HelloWorld,
-  },
 })
-export default class HomeView extends Vue {}
+export default class HomeView extends Vue {
+  client = instantMeiliSearch(
+      "http://localhost:7700/",
+      "masterKey"
+  );
+}
 </script>
