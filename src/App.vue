@@ -7,7 +7,7 @@
         </v-list>
       </v-navigation-drawer>
       <v-main>
-        <router-view/>
+        <router-view :key="$route.fullPath"/>
       </v-main>
     </v-layout>
   </v-app>

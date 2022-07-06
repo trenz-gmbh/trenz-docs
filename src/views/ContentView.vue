@@ -48,7 +48,6 @@ export default defineComponent({
     }
 
     const doc = docs.hits[0];
-    console.log(doc);
     this.content = doc.content;
   },
 })
