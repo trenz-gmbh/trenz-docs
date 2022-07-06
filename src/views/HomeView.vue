@@ -1,26 +1,35 @@
 <template>
   <div class="home">
-    <ais-instant-search :search-client="client" index-name="files">
-      <ais-search-box />
-      <ais-hits>
-        <template v-slot:item="{ item }">
-          <h2>{{ item.name }}</h2>
-        </template>
-      </ais-hits>
-    </ais-instant-search>
+    <ul>
+      <li v-for="(node, uid) in tree.children" :key="uid">
+        {{ node.location }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import { MeiliSearch } from 'meilisearch';
 
 @Options({
 })
 export default class HomeView extends Vue {
-  client = instantMeiliSearch(
-      "http://localhost:7700/",
-      "masterKey"
-  );
+  tree: any = {children: {}};
+
+  async mounted() {
+    await this.getTree();
+  }
+
+  async getTree() {
+    const client = new MeiliSearch({
+      apiKey: "masterKey",
+      host: "http://localhost:7700/",
+    });
+    let results = await client.index('files').search();
+    let hits = results.hits;
+
+    this.tree = {children: hits};
+  }
 }
 </script>
