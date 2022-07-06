@@ -17,12 +17,14 @@
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-instantsearch": "^4.4.0",
+    "vue-markdown-render": "^2.0.0",
     "vue-router": "^4.0.3",
     "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.0.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
     "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
