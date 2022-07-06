@@ -1,10 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
 import router from './router'
 import store from './store'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import InstantSearch from 'vue-instantsearch/vue3/es';
+import vuetify from './plugins/vuetify'
+import { loadFonts } from './plugins/webfontloader'
 
-createApp(App).use(store).use(router).use(InstantSearch).mount('#app')
+loadFonts()
+
+createApp(App)
+  .use(router)
+  .use(store)
+  .use(vuetify)
+  .mount('#app')
