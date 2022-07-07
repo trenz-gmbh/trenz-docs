@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <vue-markdown :source="content"></vue-markdown>
-  </v-container>
+	<v-container>
+		<vue-markdown :source="content"></vue-markdown>
+	</v-container>
 </template>
 
 <script lang="ts">
@@ -10,24 +10,24 @@ import {MeiliSearch} from "meilisearch";
 import VueMarkdown from "vue-markdown-render";
 
 export default defineComponent({
-  name: "ContentView",
+	name: "ContentView",
 
-  components: {
-    VueMarkdown,
-  },
+	components: {
+		VueMarkdown,
+	},
 
-  props: {
-    location: {
-      type: String,
-      required: true,
-    },
-  },
+	props: {
+		location: {
+			type: String,
+			required: true,
+		},
+	},
 
-  data() {
-    return {
-      content: "Loading...",
-    };
-  },
+	data() {
+		return {
+			content: "Loading...",
+		};
+	},
 
   async beforeMount() {
     const client = new MeiliSearch({
@@ -35,20 +35,20 @@ export default defineComponent({
       apiKey: 'masterKey',
     })
 
-    const docs = await client.index('files').search("", {
-      filter: 'location = "' + this.location + '"',
-      limit: 1,
-      attributesToRetrieve: ["content"],
-    });
+		const docs = await client.index('files').search("", {
+			filter: 'location = "' + this.location + '"',
+			limit: 1,
+			attributesToRetrieve: ["content"],
+		});
 
-    if (docs.hits.length != 1) {
-      this.content = "#Not found\r\n\r\nThis page does not exist.";
+		if (docs.hits.length != 1) {
+			this.content = "#Not found\r\n\r\nThis page does not exist.";
 
-      return;
-    }
+			return;
+		}
 
-    const doc = docs.hits[0];
-    this.content = doc.content;
-  },
+		const doc = docs.hits[0];
+		this.content = doc.content;
+	},
 })
 </script>
