@@ -1,17 +1,20 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawerOpen">
-      <v-text-field
-          class="pa-2"
-          v-model="searchQuery"
-          label="Search wiki"
-          @focusin="maybeNavigateToSearch"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          clearable
-          hide-details
-          single-line
-      ></v-text-field>
+    <v-navigation-drawer app v-model="drawerOpen" :permanent="drawerFixed">
+      <template #prepend>
+        <div class="pa-2">
+          <v-text-field
+              v-model="searchQuery"
+              label="Search wiki"
+              @focusin="maybeNavigateToSearch"
+              prepend-inner-icon="mdi-magnify"
+              variant="outlined"
+              clearable
+              hide-details
+              single-line
+          ></v-text-field>
+        </div>
+      </template>
 
       <v-list>
         <v-list-item
@@ -24,6 +27,14 @@
         />
         <nav-tree-node v-for="(n, i) of $store.state.navTree.values()" :node="n" :key="i"/>
       </v-list>
+
+      <template #append>
+        <div class="pa-2">
+          <v-btn :icon="true" :flat="true" :color="drawerFixed ? 'primary' : null" @click.stop="drawerFixed = drawerOpen = !drawerFixed">
+            <v-icon>mdi-pin</v-icon>
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -31,11 +42,12 @@
         <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
       </template>
       <v-app-bar-title>
-        <v-breadcrumbs :items="breadcrumbItems" style="padding: 0; margin: 0;" />
+        {{ title }}
       </v-app-bar-title>
     </v-app-bar>
 
     <v-main>
+      <v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0" />
       <v-container fluid>
         <router-view :key="$route.fullPath"/>
       </v-container>
@@ -56,12 +68,15 @@ export default defineComponent({
 
   async beforeMount() {
     await this.$store.dispatch('loadNavTree');
+
+    this.drawerFixed = window.localStorage.getItem('drawerFixed') === 'true';
   },
 
   data() {
     return {
       searchQuery: '',
       drawerOpen: true,
+      drawerFixed: true,
     }
   },
 
@@ -69,6 +84,10 @@ export default defineComponent({
     async searchQuery(q) {
       await this.$store.dispatch('search', q);
       await this.maybeNavigateToSearch();
+    },
+
+    drawerFixed(v) {
+      window.localStorage.setItem('drawerFixed', v);
     },
   },
 
@@ -104,7 +123,16 @@ export default defineComponent({
           disabled: false,
         }
       })
-    }
+    },
+
+    title() {
+      if (!this.$route.params.location) {
+        return this.$route.meta.title;
+      }
+
+      let parts = (this.$route.params.location as string).split('/');
+      return parts[parts.length - 1];
+    },
   },
 })
 </script>
