@@ -5,6 +5,7 @@ import {IndexedFile} from "@/models/IndexedFile";
 import {SearchResult} from "@/models/SearchResult";
 import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
+import {ApiError} from "@/api/ApiClient";
 
 export default createStore({
     state: {
@@ -98,9 +99,33 @@ export default createStore({
                 }
             }
 
-            doc = await api.documents.byLocation(location);
+            const notFoundText = "# Not found\r\n\r\nThis page does not exist.";
+
+            try {
+                doc = await api.documents.byLocation(location);
+            } catch (e) {
+                console.error(e);
+
+                if (e instanceof ApiError) {
+                    switch (e.response.status) {
+                        case 404:
+                            return notFoundText;
+                        case 400:
+                            return "# Bad request\r\n\r\nThe request was malformed. Please refresh the page or try again later.";
+                        case 500:
+                            return "# Internal server error\r\n\r\nThe server encountered an error. Please try again later.";
+                        case 503:
+                            return "# Service unavailable\r\n\r\nThe server is currently unavailable. Please try again later.";
+                        default:
+                            break;
+                    }
+                }
+
+                return '# An error occurred\r\n\r\nAn unexpected error occurred while loading the document. Please try again later.';
+            }
+
             if (!doc) {
-                return "# Not found\r\n\r\nThis page does not exist.";
+                return notFoundText;
             }
 
             commit('putDocument', doc);
