@@ -70,6 +70,7 @@ import 'prismjs/components/prism-sql.min.js'
 import 'prismjs/components/prism-csharp.min.js'
 import 'prismjs/components/prism-json.min.js'
 import 'prismjs/components/prism-toml.min.js'
+import 'prismjs/components/prism-ini.min.js'
 
 export default defineComponent({
   name: "MarkdownContent",
