@@ -1,36 +1,6 @@
 <template>
-  <v-container>
-    <markdown-content :content="content" />
-  </v-container>
+  <markdown-content :content="content" />
 </template>
-
-<style lang="scss">
-@import "prismjs/themes/prism-coy.min.css";
-
-ol, ul {
-  margin-left: 1rem;
-}
-
-$code-color: #c92c2c;
-$code-background-color: #eeeeee;
-
-code:not(pre > code) {
-  background: $code-background-color;
-  color: $code-color;
-  border-radius: 0.25rem;
-  padding: 0 0.25rem;
-}
-
-code[class*=language-] {
-  overflow: initial;
-}
-
-pre {
-  border: solid 1px #00000044;
-  overflow-x: auto;
-  padding: 0.5rem;
-}
-</style>
 
 <script lang="ts">
 import {defineComponent} from "vue";

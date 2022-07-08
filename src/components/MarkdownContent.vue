@@ -5,18 +5,20 @@
 <style lang="scss">
 @import "prismjs/themes/prism-coy.min.css";
 
+$code-color: #c92c2c;
+$code-background-color: #eeeeee;
+$code-fence-border: #00000044;
+
 ol, ul {
   margin-left: 1rem;
 }
-
-$code-color: #c92c2c;
-$code-background-color: #eeeeee;
 
 code:not(pre > code) {
   background: $code-background-color;
   color: $code-color;
   border-radius: 0.25rem;
   padding: 0 0.25rem;
+  word-break: break-all;
 }
 
 code[class*=language-] {
@@ -24,9 +26,35 @@ code[class*=language-] {
 }
 
 pre {
-  border: solid 1px #00000044;
+  border: solid 1px $code-fence-border;
   overflow-x: auto;
   padding: 0.5rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+h1, h2, h3 {
+  &:not(:first-child) {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+h4, h5, h6 {
+  &:not(:first-child) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
 }
 </style>
 
