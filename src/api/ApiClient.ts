@@ -1,14 +1,11 @@
-export interface ApiError extends Error {
+export class ApiError extends Error {
     response: Response;
-}
 
-export interface ApiErrorConstructor {
-    new(response: Response, message?: string): ApiError;
-    (response: Response, message?: string): ApiError;
-    readonly prototype: ApiError;
+    constructor(response: Response, message?: string) {
+        super(message ?? response.statusText);
+        this.response = response;
+    }
 }
-
-declare let ApiError: ApiErrorConstructor;
 
 export default class ApiClient {
     private static baseUrl: string | null = null;
