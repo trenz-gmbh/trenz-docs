@@ -92,7 +92,7 @@ export default defineComponent({
         highlight(code: string, lang: string, callback?: (error: unknown, code?: string) => void): string | void {
           try {
             let html;
-            if (!lang) {
+            if (!lang || !Prism.languages[lang]) {
               html = code;
             } else {
               html = Prism.highlight(code, Prism.languages[lang], lang);
