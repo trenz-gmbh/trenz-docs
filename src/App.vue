@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app :permanent="drawerOpen">
+    <v-navigation-drawer app v-model="drawerOpen">
       <v-text-field
           class="pa-2"
           v-model="searchQuery"
