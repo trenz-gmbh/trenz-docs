@@ -43,7 +43,7 @@ export default createStore({
                     if (!node.has(part)) {
                         node.set(part, {
                             uid: doc.uid,
-                            name: doc.name,
+                            name: part,
                             location: currentPath.join('/'),
                             children: new Map(),
                         } as NavNode);
