@@ -1,5 +1,10 @@
 <template>
-	<markdown-content :content="content" />
+	<v-row v-if="loading">
+		<v-col cols="12" style="text-align: center">
+			<v-progress-circular :indeterminate="true" color="primary"></v-progress-circular>
+		</v-col>
+	</v-row>
+	<markdown-content v-else :content="content" />
 </template>
 
 <script lang="ts">
@@ -22,12 +27,22 @@ export default defineComponent({
 
 	data() {
 		return {
-			content: "Loading...",
+			loading: true,
+			content: "",
 		};
 	},
 
 	async beforeMount() {
-		this.content = await this.$store.dispatch('findDocumentByLocation', this.location);
+		try {
+			this.loading = true;
+			this.content = await this.$store.dispatch('findDocumentByLocation', this.location);
+		} catch (e: unknown) {
+			console.error(e);
+
+			this.content = "# An Error Occurred\r\n\r\nUnfortunately, an error occurred while loading the content. Please try again later.";
+		} finally {
+			this.loading = false;
+		}
 	},
 })
 </script>
