@@ -27,37 +27,14 @@ mark {
 </style>
 
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {instantMeiliSearch} from '@meilisearch/instant-meilisearch';
-import WordHighlighter from "vue-word-highlighter";
+import {defineComponent} from "vue";
 import MarkdownContent from "@/components/MarkdownContent.vue";
 
-@Options({
+export default defineComponent({
+  name: "SearchView",
+
   components: {
     MarkdownContent,
-    WordHighlighter,
   },
 })
-export default class HomeView extends Vue {
-	client = instantMeiliSearch(
-		"http://localhost:7700/",
-		"masterKey"
-	);
-
-
-  breadcrumbItems(location: string): object[] {
-    let parts = location.split('/');
-    let path = [] as string[];
-
-    return parts.map(part => {
-      path.push(part);
-
-      return {
-        text: part,
-        to: '/wiki/' + path.join('/'),
-        disabled: true,
-      }
-    })
-  }
-}
 </script>

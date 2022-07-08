@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "@meilisearch/instant-meilisearch": "^0.7.1",
     "core-js": "^3.8.3",
     "marked": "^4.0.17",
     "meilisearch": "^0.26.0",
@@ -18,7 +17,6 @@
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
-    "vue-instantsearch": "^4.4.0",
     "vue-router": "^4.0.3",
     "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.0.0",

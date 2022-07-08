@@ -46,7 +46,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
-import {instantMeiliSearch} from '@meilisearch/instant-meilisearch';
 
 export default defineComponent({
   name: 'App',
@@ -61,10 +60,6 @@ export default defineComponent({
 
   data() {
     return {
-      client: instantMeiliSearch(
-          "http://localhost:7700/",
-          "masterKey"
-      ),
       searchQuery: '',
       drawerOpen: true,
     }
