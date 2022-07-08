@@ -49,7 +49,9 @@
     <v-main>
       <v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0" />
       <v-container fluid>
-        <router-view :key="$route.fullPath"/>
+        <keep-alive>
+          <router-view :key="$route.fullPath"/>
+        </keep-alive>
       </v-container>
     </v-main>
   </v-app>
