@@ -7,6 +7,6 @@ export default {
     },
 
     async byLocation(location: string): Promise<IndexedFile|null> {
-        return ApiClient.getJson(`Documents/ByLocation?location=${location}`);
+        return ApiClient.getJson(`Documents/ByLocation/${location}`);
     }
 }
