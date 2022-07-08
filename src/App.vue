@@ -69,7 +69,7 @@ export default defineComponent({
   async beforeMount() {
     await this.$store.dispatch('loadNavTree');
 
-    this.drawerFixed = window.localStorage.getItem('drawerFixed') === 'true';
+    this.drawerFixed = window.localStorage.getItem('drawerFixed') !== 'false';
   },
 
   data() {
