@@ -1,5 +1,7 @@
 <template>
-  <v-container v-html="output"></v-container>
+  <v-container>
+    <markdown-content :content="content" />
+  </v-container>
 </template>
 
 <style lang="scss">
@@ -33,19 +35,14 @@ pre {
 <script lang="ts">
 import {defineComponent} from "vue";
 import {MeiliSearch} from "meilisearch";
-import {marked} from 'marked';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-clike.min.js'
-import 'prismjs/components/prism-yaml.min.js'
-import 'prismjs/components/prism-aspnet.min.js'
-import 'prismjs/components/prism-bash.min.js'
-import 'prismjs/components/prism-sql.min.js'
-import 'prismjs/components/prism-csharp.min.js'
-import 'prismjs/components/prism-json.min.js'
-import 'prismjs/components/prism-toml.min.js'
+import MarkdownContent from "@/components/MarkdownContent.vue";
 
 export default defineComponent({
   name: "ContentView",
+
+  components: {
+    MarkdownContent,
+  },
 
   props: {
     location: {
@@ -57,35 +54,7 @@ export default defineComponent({
   data() {
     return {
       content: "Loading...",
-      options: {
-        gfm: true,
-        breaks: true, // requires gfm to be true
-        mangle: true,
-        smartypants: true,
-        highlight(code: string, lang: string, callback?: (error: unknown, code?: string) => void): string | void {
-          try {
-            let html;
-            if (!lang) {
-              html = code;
-            } else {
-              html = Prism.highlight(code, Prism.languages[lang], lang);
-            }
-
-            if (callback) callback(null, html);
-            else return html;
-          } catch (e) {
-            if (callback) callback(e);
-            else throw e;
-          }
-        }
-      } as marked.MarkedOptions,
     };
-  },
-
-  computed: {
-    output() {
-      return marked(this.content, this.options);
-    }
   },
 
   async beforeMount() {

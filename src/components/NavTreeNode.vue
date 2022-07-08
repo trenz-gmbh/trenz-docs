@@ -16,11 +16,16 @@
       <v-list-item
           v-bind="props"
           :title="node.name"
-          :value="node.uid"
       />
     </template>
 
-    <NavTreeNode v-for="(n, i) of node.children.values()" :node="n" :key="i"/>
+    <v-list-item
+        title="Overview"
+        :to="'/wiki/' + node.location"
+        :active="$route.params.location === node.location"
+    />
+
+    <nav-tree-node v-for="(n, i) of node.children.values()" :node="n" :key="i"/>
   </v-list-group>
 </template>
 

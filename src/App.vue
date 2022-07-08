@@ -1,38 +1,115 @@
 <template>
-	<v-app>
-		<v-layout>
-			<v-navigation-drawer :permanent="true">
-				<v-list>
-					<v-list-item title="Search" :to="{name: 'search'}" />
-					<nav-tree-node v-for="(n, i) of $store.state.navTree.values()" :node="n" :key="i" />
-				</v-list>
-			</v-navigation-drawer>
-			<v-main>
-				<router-view :key="$route.fullPath" />
-			</v-main>
-		</v-layout>
-	</v-app>
+  <v-app>
+    <v-navigation-drawer app :permanent="drawerOpen">
+      <v-text-field
+          class="pa-2"
+          v-model="searchQuery"
+          label="Search wiki"
+          @focusin="maybeNavigateToSearch"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          clearable
+          hide-details
+          single-line
+      ></v-text-field>
+
+      <v-list>
+        <v-list-item
+            title="Home"
+            :to="{name: 'home'}"
+        />
+        <v-list-item
+            title="About"
+            :to="{name: 'about'}"
+        />
+        <nav-tree-node v-for="(n, i) of $store.state.navTree.values()" :node="n" :key="i"/>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <template #prepend>
+        <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
+      </template>
+      <v-app-bar-title>
+        <v-breadcrumbs :items="breadcrumbItems" style="padding: 0; margin: 0;" />
+      </v-app-bar-title>
+    </v-app-bar>
+
+    <v-main>
+      <v-container fluid>
+        <router-view :key="$route.fullPath"/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
+import {instantMeiliSearch} from '@meilisearch/instant-meilisearch';
 
 export default defineComponent({
-	name: 'App',
+  name: 'App',
 
-	components: {
-		NavTreeNode,
-	},
+  components: {
+    NavTreeNode,
+  },
 
-	async beforeMount() {
-		await this.$store.dispatch('loadNavTree');
-	},
+  async beforeMount() {
+    await this.$store.dispatch('loadNavTree');
+  },
 
-	data() {
-		return {
-			//
-		}
-	},
+  data() {
+    return {
+      client: instantMeiliSearch(
+          "http://localhost:7700/",
+          "masterKey"
+      ),
+      searchQuery: '',
+      drawerOpen: true,
+    }
+  },
+
+  watch: {
+    async searchQuery(q) {
+      await this.$store.dispatch('search', q);
+      await this.maybeNavigateToSearch();
+    },
+  },
+
+  methods: {
+    async maybeNavigateToSearch() {
+      if (this.$route.name !== 'search' && this.$store.state.searchQuery.length > 0) {
+        await this.$router.push({'name': 'search'})
+      }
+    }
+  },
+
+  computed: {
+    breadcrumbItems() {
+      if (!this.$route.params.location) {
+        return [
+          {
+            text: this.$route.meta.title,
+            to: this.$route.fullPath,
+            disabled: false,
+          }
+        ];
+      }
+
+      let parts = (this.$route.params.location as string).split('/');
+      let path = [] as string[];
+
+      return parts.map(part => {
+        path.push(part);
+
+        return {
+          text: part,
+          to: '/wiki/' + path.join('/'),
+          disabled: false,
+        }
+      })
+    }
+  },
 })
 </script>
