@@ -5,12 +5,6 @@
       :to="'/wiki/' + node.location"
       :active="$route.params.location === node.location"
   />
-  <v-list-item
-      v-else-if="node.children.size === 1 && firstChild.name === node.name"
-      :title="firstChild.name"
-      :to="'/wiki/' + firstChild.location"
-      :active="$route.params.location === firstChild.location"
-  />
   <v-list-group v-else>
     <template #activator="{ props }">
       <v-list-item
