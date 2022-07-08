@@ -5,7 +5,7 @@
         <div class="pa-2">
           <v-text-field
               v-model="searchQuery"
-              label="Search wiki"
+              label="Search Wiki"
               @focusin="maybeNavigateToSearch"
               prepend-inner-icon="mdi-magnify"
               variant="outlined"
