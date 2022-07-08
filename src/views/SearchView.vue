@@ -3,7 +3,7 @@
 		<ais-search-box />
 		<ais-hits>
 			<template v-slot:item="{ item }">
-				<a :href="'/wiki/' + item.location">{{ item.name }}</a>
+				<router-link :to="'/wiki/' + item.location">{{ item.name }}</router-link>
 			</template>
 		</ais-hits>
 	</ais-instant-search>
@@ -17,8 +17,8 @@ import {instantMeiliSearch} from '@meilisearch/instant-meilisearch';
 })
 export default class HomeView extends Vue {
 	client = instantMeiliSearch(
-		"http://logging.trenz.cloud:7700/",
-		"s3cr3t!K3y"
+		"http://localhost:7700/",
+		"masterKey"
 	);
 }
 </script>
