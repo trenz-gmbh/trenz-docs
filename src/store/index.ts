@@ -1,11 +1,10 @@
 import {createStore} from 'vuex'
-import {MeiliSearch} from "meilisearch";
-import {Document, NavNode, NavTree, SearchResult, State} from "@/store/State";
-
-const client = new MeiliSearch({
-    host: 'http://localhost:7700',
-    apiKey: 'masterKey',
-})
+import {State} from "@/store/State";
+import {NavNode} from "@/models/NavNode";
+import {IndexedFile} from "@/models/IndexedFile";
+import {SearchResult} from "@/models/SearchResult";
+import {NavTree} from "@/models/NavTree";
+import * as api from "@/api";
 
 export default createStore({
     state: {
@@ -30,16 +29,14 @@ export default createStore({
             state.searchResultMessage = message;
         },
 
-        putDocument(state: State, document: Document) {
+        putDocument(state: State, document: IndexedFile) {
             state.documents.set(document.location, document);
         }
     },
     actions: {
         async loadNavTree({commit}) {
-            const docs = await client.index('files').getDocuments({
-                limit: 10000,
-                attributesToRetrieve: ['location', 'name', 'uid'],
-            });
+            // TODO: replace all() with getNavTree()
+            const docs = await api.documents.all();
             const tree: NavTree = new Map();
             for (const doc of docs) {
                 const path = doc.location.split('/');
@@ -75,19 +72,11 @@ export default createStore({
             }
 
             try {
-                const results = await client.index('files').search(query, {
-                    attributesToHighlight: ['name', 'location', 'content'],
-                    highlightPreTag: '<mark>',
-                    highlightPostTag: '</mark>',
-                    attributesToCrop: ['content'],
-                    cropLength: 15,
-                    attributesToRetrieve: ['name', 'location', 'content'],
-                    //matches: true,
-                });
+                const results = await api.search(query);
 
                 commit('setSearchResults', {
-                    results: results.hits,
-                    message: results.hits.length === 0 ? 'No results found.' : null
+                    results: results,
+                    message: results.length === 0 ? 'No results found.' : null
                 });
             } catch (e: unknown) {
                 let message = "An unknown error occurred.";
@@ -101,23 +90,18 @@ export default createStore({
         },
 
         async findDocumentByLocation({state, commit}, location: string): Promise<string> {
+            let doc: IndexedFile|null = null;
             if (state.documents.has(location)) {
-                const doc = state.documents.get(location);
+                doc = state.documents.get(location) || null;
                 if (doc) {
                     return doc.content;
                 }
             }
 
-            const docs = await client.index('files').search("", {
-                filter: 'location = "' + location + '"',
-                limit: 1,
-            });
-
-            if (docs.hits.length != 1) {
+            doc = await api.documents.byLocation(location);
+            if (!doc) {
                 return "# Not found\r\n\r\nThis page does not exist.";
             }
-
-            const doc = docs.hits[0] as Document;
 
             commit('putDocument', doc);
 
