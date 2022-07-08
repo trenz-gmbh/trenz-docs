@@ -19,5 +19,7 @@ export interface SearchResult extends Omit<Document, 'uid'|'order'> {
 export interface State {
     navTree: NavTree;
     searchQuery: string;
-    searchResults: Array<SearchResult>
+    searchResults: Array<SearchResult>;
+    searchResultMessage: string|null;
+    documents: Map<string, Document>;
 }

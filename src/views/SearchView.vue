@@ -11,8 +11,8 @@
         </template>
       </v-card>
     </v-col>
-    <v-col :cols="4" v-if="$store.state.searchResults.length === 0">
-      {{ $store.state.searchQuery.length === 0 ? 'Search for something. Your results will be shown here.' : 'No results found' }}
+    <v-col :cols="12" :md="6" :lg="4" v-if="$store.state.searchResultMessage !== null">
+      {{ $store.state.searchResultMessage }}
     </v-col>
   </v-row>
 </template>
