@@ -4,6 +4,9 @@
 			<v-progress-circular :indeterminate="true" color="primary"></v-progress-circular>
 		</v-col>
 	</v-row>
+	<v-alert v-else-if="error !== null" :prominent="true" type="error" variant="outlined">
+		{{ error }}
+	</v-alert>
 	<markdown-content v-else :content="content" />
 </template>
 
@@ -29,6 +32,7 @@ export default defineComponent({
 		return {
 			loading: true,
 			content: "",
+			error: null as null|string,
 		};
 	},
 
@@ -37,9 +41,13 @@ export default defineComponent({
 			this.loading = true;
 			this.content = await this.$store.dispatch('findDocumentByLocation', this.location);
 		} catch (e: unknown) {
-			console.error(e);
+			if (typeof e === 'string') {
+				this.error = e;
+			} else {
+				console.error(e);
 
-			this.content = "# An Error Occurred\r\n\r\nUnfortunately, an error occurred while loading the content. Please try again later.";
+				this.error = "Unfortunately, an error occurred while loading the content. Please try again later.";
+			}
 		} finally {
 			this.loading = false;
 		}
