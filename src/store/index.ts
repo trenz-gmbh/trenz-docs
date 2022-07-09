@@ -1,6 +1,5 @@
 import {createStore} from 'vuex'
 import {State} from "@/store/State";
-import {NavNode} from "@/models/NavNode";
 import {IndexedFile} from "@/models/IndexedFile";
 import {SearchResult} from "@/models/SearchResult";
 import {NavTree} from "@/models/NavTree";
@@ -9,7 +8,7 @@ import {ApiError} from "@/api/ApiClient";
 
 export default createStore({
     state: {
-        navTree: new Map(),
+        navTree: {},
         searchQuery: '',
         searchResults: [],
         searchResultMessage: null,
@@ -36,31 +35,7 @@ export default createStore({
     },
     actions: {
         async loadNavTree({commit}) {
-            // TODO: replace all() with getNavTree()
-            const docs = await api.documents.all();
-            const tree: NavTree = new Map();
-            for (const doc of docs) {
-                const path = doc.location.split('/');
-                const currentPath = [];
-                let node = tree;
-                for (const part of path) {
-                    currentPath.push(part);
-                    if (!node.has(part)) {
-                        node.set(part, {
-                            uid: doc.uid,
-                            name: part,
-                            location: currentPath.join('/'),
-                            children: new Map(),
-                        } as NavNode);
-                    }
-                    const child = node.get(part);
-                    if (child) {
-                        node = child.children;
-                    }
-                }
-            }
-
-            commit('setNavTree', tree)
+            commit('setNavTree', await api.documents.navTree());
         },
 
         async search({commit}, query: string) {
@@ -77,7 +52,7 @@ export default createStore({
 
                 commit('setSearchResults', {
                     results: results,
-                    message: results.length === 0 ? 'No results found.' : null
+                    message: results.length === 0 ? "No results found." : null
                 });
             } catch (e: unknown) {
                 let message = "An unknown error occurred.";
@@ -123,7 +98,7 @@ export default createStore({
                     }
                 }
 
-                throw 'An unexpected error occurred while loading the document. Please try again later.';
+                throw "An unexpected error occurred while loading the document. Please try again later.";
             }
 
             if (doc === null) {

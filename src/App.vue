@@ -25,7 +25,7 @@
             title="About"
             :to="{name: 'about'}"
         />
-        <nav-tree-node v-for="(n, i) of $store.state.navTree.values()" :node="n" :key="i"/>
+        <nav-tree-node v-for="(n, i) of $store.state.navTree" :node="n" :key="i"/>
       </v-list>
 
       <template #append>

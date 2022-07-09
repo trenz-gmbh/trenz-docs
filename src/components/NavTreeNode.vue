@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-      v-if="node.children.size === 0"
+      v-if="node.children === null"
       :title="node.name"
       :to="'/wiki/' + node.location"
       :active="$route.params.location === node.location"
@@ -19,7 +19,7 @@
         :active="$route.params.location === node.location"
     />
 
-    <nav-tree-node v-for="(n, i) of node.children.values()" :node="n" :key="i"/>
+    <nav-tree-node v-for="(n, i) of node.children" :node="n" :key="i"/>
   </v-list-group>
 </template>
 
@@ -33,21 +33,10 @@ export default defineComponent({
     node: {
       type: Object,
       required: true,
+      validator: (node) => {
+        return Object.hasOwnProperty.call(node, 'name') && Object.hasOwnProperty.call(node, 'location');
+      },
     },
   },
-
-  computed: {
-    firstChild() {
-      return [...this.node.children.values()][0];
-    }
-  }
 })
 </script>
-
-<!--
-<style scoped lang="scss">
-ul {
-  list-style: none;
-  margin-left: 1rem;
-}
-</style>-->

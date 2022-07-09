@@ -1,3 +1,3 @@
 import {NavNode} from "@/models/NavNode";
 
-export type NavTree = Map<string, NavNode>;
+export type NavTree = Record<string, NavNode>;
