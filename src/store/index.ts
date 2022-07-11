@@ -105,7 +105,7 @@ export default createStore({
                 return notFoundText;
             }
 
-            doc.content = doc.content.replaceAll("%API_HOST%", ApiClient.getBaseUrl() ?? "/api");
+            doc.content = doc.content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
 
             commit('putDocument', doc);
 

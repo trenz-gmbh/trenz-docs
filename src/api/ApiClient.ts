@@ -11,6 +11,10 @@ export default class ApiClient {
     private static baseUrl: string | null = null;
 
     static setBaseUrl(url: string) {
+        if (!url.endsWith('/')) {
+            url += '/';
+        }
+
         this.baseUrl = url;
     }
 
