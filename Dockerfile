@@ -2,6 +2,12 @@ FROM node:lts-alpine as build
 
 WORKDIR /app
 
+ARG NODE_ENV
+ARG VUE_APP_API_BASE
+
+ENV NODE_ENV $NODE_ENV
+ENV VUE_APP_API_BASE $VUE_APP_API_BASE
+
 # add node binaries to path
 ENV PATH /app/node_modules/.bin:$PATH
 

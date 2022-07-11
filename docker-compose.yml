@@ -5,8 +5,9 @@ services:
     build:
       context: .
       target: final
-    environment:
-      - VUE_APP_API_BASE=http://localhost:5000/api/
+      args:
+        - NODE_ENV=${NODE_ENV:-production}
+        - VUE_APP_API_BASE=http://localhost:5000/api/
     ports:
       - "80:80"
     restart: unless-stopped
@@ -18,8 +19,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - Meilisearch__Url=http://meilisearch:7700
       - Meilisearch__ApiKey=${MEILISEARCH_API_KEY:-masterKey}
-      - ApiHost=http://localhost:5000/api
-      - FrontendHost=http://localhost:80
     ports:
       - "5000:80"
     restart: unless-stopped
