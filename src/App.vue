@@ -46,7 +46,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app :elevation="0" class="border-b acrylic">
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
       </template>
@@ -67,6 +67,14 @@
     </v-main>
   </v-app>
 </template>
+
+<style lang="scss">
+.acrylic {
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	background: rgba(255,255,255,0.5) !important;
+}
+</style>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
