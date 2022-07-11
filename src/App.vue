@@ -29,11 +29,20 @@
       </v-list>
 
       <template #append>
-        <div class="pa-2">
-          <v-btn :icon="true" :flat="true" :color="drawerFixed ? 'primary' : null" @click.stop="drawerFixed = drawerOpen = !drawerFixed">
-            <v-icon>mdi-pin</v-icon>
-          </v-btn>
-        </div>
+        <v-row>
+          <v-col style="flex: 0 1">
+            <div class="pa-2">
+              <v-btn :icon="true" :flat="true" :color="drawerFixed ? 'primary' : null" @click.stop="drawerFixed = drawerOpen = !drawerFixed">
+                <v-icon>mdi-pin</v-icon>
+              </v-btn>
+            </div>
+          </v-col>
+          <v-col v-if="env !== 'production'">
+            <small>
+              Built using <code>{{ env }}</code> environment.
+            </small>
+          </v-col>
+        </v-row>
       </template>
     </v-navigation-drawer>
 
@@ -137,6 +146,10 @@ export default defineComponent({
       let parts = (this.$route.params.location as string).split('/');
       return parts[parts.length - 1];
     },
+
+    env() {
+      return process.env.NODE_ENV;
+    }
   },
 })
 </script>
