@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer app v-model="drawerOpen" :permanent="drawerFixed">
       <template #prepend>
-        <div class="pa-2">
+        <div class="px-2 border-b d-flex align-center" style="height: 65px">
           <v-text-field
               v-model="searchQuery"
               label="Search Wiki"
@@ -12,6 +12,7 @@
               clearable
               hide-details
               single-line
+              density="compact"
           ></v-text-field>
         </div>
       </template>
