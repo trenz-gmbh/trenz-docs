@@ -4,20 +4,20 @@
 			<v-progress-circular :indeterminate="true" color="primary"></v-progress-circular>
 		</v-col>
 	</v-row>
-	<v-alert v-else-if="error !== null" :prominent="true" type="error" variant="outlined">
-		{{ error }}
-	</v-alert>
+	<not-found-view v-else-if="error !== null"></not-found-view>
 	<markdown-content v-else :content="content" />
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 import MarkdownContent from "@/components/MarkdownContent.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 export default defineComponent({
 	name: "ContentView",
 
 	components: {
+		NotFoundView,
 		MarkdownContent,
 	},
 

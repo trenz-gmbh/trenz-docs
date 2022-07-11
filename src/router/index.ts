@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import ContentView from "@/views/ContentView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,13 @@ const routes: Array<RouteRecordRaw> = [
         title: 'Search',
     }
   },
+  {
+    path: '/:path(.*)*',
+    component: NotFoundView,
+    meta: {
+      title: '',
+    }
+  }
 ]
 
 const router = createRouter({
