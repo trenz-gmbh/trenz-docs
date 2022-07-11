@@ -37,9 +37,9 @@
               </v-btn>
             </div>
           </v-col>
-          <v-col v-if="env !== 'production'">
-            <small>
-              Built using <code>{{ env }}</code> environment.
+          <v-col v-if="env !== 'production'" class="d-flex flex-row align-center justify-end">
+            <small class="pa-2">
+              <code>{{ env }}</code>
             </small>
           </v-col>
         </v-row>
