@@ -4,7 +4,7 @@ import {IndexedFile} from "@/models/IndexedFile";
 import {SearchResult} from "@/models/SearchResult";
 import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
-import {ApiError} from "@/api/ApiClient";
+import ApiClient, {ApiError} from "@/api/ApiClient";
 
 export default createStore({
     state: {
@@ -104,6 +104,8 @@ export default createStore({
             if (doc === null) {
                 return notFoundText;
             }
+
+            doc.content = doc.content.replaceAll("%API_HOST%", ApiClient.getBaseUrl() ?? "/api");
 
             commit('putDocument', doc);
 

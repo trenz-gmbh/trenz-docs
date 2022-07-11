@@ -14,6 +14,10 @@ export default class ApiClient {
         this.baseUrl = url;
     }
 
+    static getBaseUrl(): string | null {
+        return this.baseUrl;
+    }
+
     private static buildHeaders() : HeadersInit {
         return {};
     }
