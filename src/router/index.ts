@@ -1,22 +1,13 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import ContentView from "@/views/ContentView.vue";
-import SearchView from "@/views/SearchView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/HomeView.vue'),
     meta: {
         title: 'Home',
-    }
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-    meta: {
-        title: 'About',
     }
   },
   {
@@ -28,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/search',
     name: 'search',
-    component: SearchView,
+    component: () => import(/* webpackChunkName: "search" */ '../views/SearchView.vue'),
     meta: {
         title: 'Search',
     }

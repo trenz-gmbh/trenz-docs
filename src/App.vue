@@ -31,10 +31,6 @@
 					title="Home"
 					:to="{name: 'home'}"
 				/>
-				<v-list-item
-					title="About"
-					:to="{name: 'about'}"
-				/>
 				<nav-tree-node v-for="(n, i) of $store.state.navTree" :node="n" :key="i" />
 			</v-list>
 
