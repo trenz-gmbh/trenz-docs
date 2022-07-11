@@ -100,6 +100,7 @@ export default defineComponent({
 		await this.$store.dispatch('loadNavTree');
 
 		this.drawerFixed = window.localStorage.getItem('drawerFixed') !== 'false';
+		this.drawerOpen = this.drawerFixed;
 	},
 
 	unmounted() {
@@ -109,7 +110,7 @@ export default defineComponent({
 	data() {
 		return {
 			searchQuery: '',
-			drawerOpen: true,
+			drawerOpen: false,
 			drawerFixed: true,
 			searchFieldFocussed: false,
 		}
