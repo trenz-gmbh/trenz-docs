@@ -4,16 +4,25 @@
 			<template #prepend>
 				<div class="px-2 border-b d-flex align-center" style="height: 65px">
 					<v-text-field
+						ref="search"
 						v-model="searchQuery"
 						label="Search Wiki"
-						@focusin="maybeNavigateToSearch"
+						@focusin="handleSearchFieldFocusin"
+						@focusout="handleSearchFieldFocusout"
 						prepend-inner-icon="mdi-magnify"
 						variant="outlined"
 						clearable
 						hide-details
 						single-line
 						density="compact"
-					></v-text-field>
+					>
+						<template #append-inner v-if="!searchFieldFocussed">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true">
+								<path fill="none" stroke="#979A9C" opacity=".4" d="M3.5.5h12c1.7 0 3 1.3 3 3v13c0 1.7-1.3 3-3 3h-12c-1.7 0-3-1.3-3-3v-13c0-1.7 1.3-3 3-3z"></path>
+								<path fill="#979A9C" d="M11.8 6L8 15.1h-.9L10.8 6h1z"></path>
+							</svg>
+						</template>
+					</v-text-field>
 				</div>
 			</template>
 
@@ -80,6 +89,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
+import {VTextField} from "vuetify/components";
 
 export default defineComponent({
 	name: 'App',
@@ -89,9 +99,15 @@ export default defineComponent({
 	},
 
 	async beforeMount() {
+		window.addEventListener('keydown', this.handleKeyDown)
+
 		await this.$store.dispatch('loadNavTree');
 
 		this.drawerFixed = window.localStorage.getItem('drawerFixed') !== 'false';
+	},
+
+	unmounted() {
+		window.removeEventListener('keydown', this.handleKeyDown)
 	},
 
 	data() {
@@ -99,6 +115,7 @@ export default defineComponent({
 			searchQuery: '',
 			drawerOpen: true,
 			drawerFixed: true,
+			searchFieldFocussed: false,
 		}
 	},
 
@@ -114,9 +131,43 @@ export default defineComponent({
 	},
 
 	methods: {
+		async handleSearchFieldFocusin() {
+			this.searchFieldFocussed = true;
+
+			await this.maybeNavigateToSearch();
+		},
+
+		async handleSearchFieldFocusout() {
+			this.searchFieldFocussed = false;
+		},
+
 		async maybeNavigateToSearch() {
 			if (this.$route.name !== 'search' && this.$store.state.searchQuery.length > 0) {
 				await this.$router.push({'name': 'search'})
+			}
+		},
+
+		handleKeyDown(e: KeyboardEvent) {
+			if (e.key === 'Escape') {
+				if (this.drawerOpen && !this.drawerFixed) {
+					this.drawerOpen = false;
+				}
+
+				if (this.searchFieldFocussed) {
+					this.searchQuery = '';
+				}
+			} else if (e.key === '/') {
+				if (!this.drawerFixed && !this.drawerOpen) {
+					this.drawerOpen = true;
+				}
+
+				const searchField = this.$refs.search as VTextField;
+
+				if (!this.searchFieldFocussed) {
+					this.searchQuery = '';
+					searchField.focus();
+					e.preventDefault();
+				}
 			}
 		}
 	},
