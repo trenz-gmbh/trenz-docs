@@ -6,7 +6,7 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import ApiClient from "@/api/ApiClient";
 
-ApiClient.setBaseUrl("https://localhost:7262/api/")
+ApiClient.setBaseUrl(process.env.VUE_APP_API_BASE)
 
 loadFonts()
 
