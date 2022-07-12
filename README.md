@@ -1,5 +1,7 @@
 # wikidown
 
+[![Node.js CI](https://github.com/trenz-gmbh/wikidown/actions/workflows/node.js.yml/badge.svg)](https://github.com/trenz-gmbh/wikidown/actions/workflows/node.js.yml)
+
 ## Project setup
 ```
 npm install
