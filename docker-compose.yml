@@ -6,10 +6,9 @@ services:
       context: .
       target: final
       args:
-        - NODE_ENV=${NODE_ENV:-production}
-        - VUE_APP_API_BASE=http://localhost:5000/api/
+        - VUE_APP_API_BASE=http://localhost:5001/api/
     ports:
-      - "80:80"
+      - "5000:80"
     restart: unless-stopped
     depends_on:
       - api
@@ -20,7 +19,7 @@ services:
       - Meilisearch__Url=http://meilisearch:7700
       - Meilisearch__ApiKey=${MEILISEARCH_API_KEY:-masterKey}
     ports:
-      - "5000:80"
+      - "5001:80"
     restart: unless-stopped
     depends_on:
       - meilisearch
