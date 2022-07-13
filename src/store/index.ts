@@ -30,7 +30,7 @@ export default createStore({
             state.searchQuery = searchQuery;
         },
 
-        setSearchResults(state: State, {results, message}: {results: SearchResult[], message: string|null}) {
+        setSearchResults(state: State, {results, message}: { results: SearchResult[], message: string | null }) {
             state.searchResults = results;
             state.searchResultMessage = message;
         },
@@ -55,7 +55,10 @@ export default createStore({
             await commit('setSearchQuery', query);
 
             if (query.length === 0) {
-                commit('setSearchResults', {results: [], message: "Search for something. Your results will be shown here."});
+                commit('setSearchResults', {
+                    results: [],
+                    message: "Search for something. Your results will be shown here."
+                });
 
                 return;
             }
@@ -84,7 +87,7 @@ export default createStore({
         },
 
         async findDocumentByLocation({state, commit}, location: string): Promise<string> {
-            let doc: IndexedFile|null = null;
+            let doc: IndexedFile | null = null;
             if (state.documents.has(location)) {
                 doc = state.documents.get(location) || null;
                 if (doc) {
