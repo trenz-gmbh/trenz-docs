@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-      v-if="node.children === null"
+      v-if="sortedChildren === null"
       :title="node.name"
       :to="'/wiki/' + node.location"
       :active="$route.params.location === node.location"
@@ -19,7 +19,7 @@
         :active="$route.params.location === node.location"
     />
 
-    <nav-tree-node v-for="(n, i) of node.children" :node="n" :key="i"/>
+    <nav-tree-node v-for="(childNode, i) of sortedChildren" :node="childNode" :key="i"/>
   </v-list-group>
 </template>
 
@@ -33,10 +33,26 @@ export default defineComponent({
     node: {
       type: Object,
       required: true,
-      validator: (node) => {
-        return Object.hasOwnProperty.call(node, 'name') && Object.hasOwnProperty.call(node, 'location');
+      validator: (n: unknown): boolean => {
+        return Object.hasOwnProperty.call(n, 'name') &&
+            Object.hasOwnProperty.call(n, 'location') &&
+            Object.hasOwnProperty.call(n, 'children') &&
+            Object.hasOwnProperty.call(n, 'order');
       },
     },
+  },
+
+  computed: {
+    sortedChildren() {
+      if (this.node.children === null) {
+        return null;
+      }
+
+      // do not sort node.children directly, because it would modify the original array
+      return [...Object.keys(this.node.children).map(k => this.node.children[k]).filter(n => n.order >= 0)].sort((a, b) => {
+        return a.order - b.order;
+      });
+    }
   },
 })
 </script>

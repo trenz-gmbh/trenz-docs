@@ -31,7 +31,7 @@
 					title="Home"
 					:to="{name: 'home'}"
 				/>
-				<nav-tree-node v-for="(n, i) of $store.state.navTree" :node="n" :key="i" />
+				<nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i" />
 			</v-list>
 
 			<template #append>
@@ -207,7 +207,18 @@ export default defineComponent({
 
 		env() {
 			return process.env.NODE_ENV;
-		}
+		},
+
+    sortedNavTree() {
+      if (this.$store.state.navTree === null) {
+        return null;
+      }
+
+      // do not sort navTree directly, because it would modify the original array
+      return [...Object.keys(this.$store.state.navTree).map(k => this.$store.state.navTree[k]).filter(n => n.order >= 0)].sort((a, b) => {
+        return a.order - b.order;
+      });
+    }
 	},
 })
 </script>
