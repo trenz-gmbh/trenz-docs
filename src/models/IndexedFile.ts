@@ -3,5 +3,4 @@ export interface IndexedFile {
     name: string;
     location: string;
     content: string;
-    order: number;
 }
