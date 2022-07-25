@@ -1,6 +1,6 @@
 <template>
 	<v-app>
-		<v-navigation-drawer app v-model="drawerOpen" :permanent="drawerFixed">
+		<v-navigation-drawer app v-model="drawerOpen" :permanent="true">
 			<template #prepend>
 				<div class="px-2 border-b d-flex align-center" style="height: 65px">
 					<v-text-field
@@ -36,18 +36,8 @@
 
 			<template #append>
 				<v-row>
-					<v-col style="flex: 0 1">
-						<div class="pa-2">
-							<v-btn :icon="true" :flat="true" :color="drawerFixed ? 'primary' : null" @click.stop="drawerFixed = drawerOpen = !drawerFixed">
-								<v-icon>mdi-pin</v-icon>
-							</v-btn>
-						</div>
-					</v-col>
-					<v-col class="d-flex flex-row align-end justify-end">
-						<small class="pa-1" style="font-size: 0.6rem">
-							<code v-if="env !== 'production'" >{{ env }}</code>
-              <span v-else>trenz-docs, made by <a href="https://github.com/trenz-gmbh/trenz-docs" target="_blank">TRENZ</a> with <span class="text-red">&hearts;</span></span>
-						</small>
+					<v-col style="flex: 1 0" class="ma-2 d-flex align-center justify-center">
+						<trenz-docs-logo />
 					</v-col>
 				</v-row>
 			</template>
@@ -87,11 +77,13 @@
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
+import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 
 export default defineComponent({
 	name: 'App',
 
 	components: {
+		TrenzDocsLogo,
 		NavTreeNode,
 	},
 
@@ -99,9 +91,6 @@ export default defineComponent({
 		window.addEventListener('keydown', this.handleKeyDown)
 
 		await this.$store.dispatch('loadNavTree');
-
-		this.drawerFixed = window.localStorage.getItem('drawerFixed') !== 'false';
-		this.drawerOpen = this.drawerFixed;
 	},
 
 	unmounted() {
@@ -112,7 +101,6 @@ export default defineComponent({
 		return {
 			searchQuery: '',
 			drawerOpen: false,
-			drawerFixed: true,
 			searchFieldFocussed: false,
 		}
 	},
@@ -121,10 +109,6 @@ export default defineComponent({
 		async searchQuery(q) {
 			await this.$store.dispatch('search', q);
 			await this.maybeNavigateToSearch();
-		},
-
-		drawerFixed(v) {
-			window.localStorage.setItem('drawerFixed', v);
 		},
 	},
 
@@ -147,15 +131,11 @@ export default defineComponent({
 
 		handleKeyDown(e: KeyboardEvent) {
 			if (e.key === 'Escape') {
-				if (this.drawerOpen && !this.drawerFixed) {
-					this.drawerOpen = false;
-				}
-
 				if (this.searchFieldFocussed) {
 					this.searchQuery = '';
 				}
 			} else if (e.key === '/') {
-				if (!this.drawerFixed && !this.drawerOpen) {
+				if (!this.drawerOpen) {
 					this.drawerOpen = true;
 				}
 
