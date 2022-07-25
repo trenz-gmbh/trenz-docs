@@ -1,6 +1,6 @@
-# wikidown
+# trenz-docs
 
-[![Node.js CI](https://github.com/trenz-gmbh/wikidown/actions/workflows/node.js.yml/badge.svg)](https://github.com/trenz-gmbh/wikidown/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/node.js.yml/badge.svg)](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/node.js.yml)
 
 ## Project setup
 ```
@@ -27,11 +27,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Deployment
 
-To deploy a wikidown wiki, follow these steps:
+To deploy a trenz-docs wiki, follow these steps:
 
 1. clone this repository to the target server:
    ```bash
-   git clone https://github.com/trenz-gmbh/wikidown my-wiki
+   git clone https://github.com/trenz-gmbh/trenz-docs my-wiki
    cd my-wiki
    ```
 
@@ -43,7 +43,7 @@ To deploy a wikidown wiki, follow these steps:
          "Name": "My internal wiki",
          "Type": "git",
          "Url": "https://path/to/my/git/repo.git",
-         "Username": "wikidown",
+         "Username": "trenz-docs",
          "Password": "$3cr3t"
        }
      ]
