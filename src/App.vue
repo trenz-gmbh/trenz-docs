@@ -46,7 +46,7 @@
 					<v-col class="d-flex flex-row align-end justify-end">
 						<small class="pa-1" style="font-size: 0.6rem">
 							<code v-if="env !== 'production'" >{{ env }}</code>
-              <span v-else>Wikidown, made by <a href="https://github.com/trenz-gmbh/wikidown" target="_blank">TRENZ</a> with <span class="text-red">&hearts;</span></span>
+              <span v-else>trenz-docs, made by <a href="https://github.com/trenz-gmbh/trenz-docs" target="_blank">TRENZ</a> with <span class="text-red">&hearts;</span></span>
 						</small>
 					</v-col>
 				</v-row>
