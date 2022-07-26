@@ -43,7 +43,7 @@
 			</template>
 		</v-navigation-drawer>
 
-		<v-app-bar app :elevation="0" class="border-b acrylic">
+		<v-app-bar app :elevation="0" class="border-b">
 			<template #prepend>
 				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
 			</template>
@@ -66,10 +66,20 @@
 </template>
 
 <style lang="scss">
-.acrylic {
-	-webkit-backdrop-filter: blur(10px);
-	backdrop-filter: blur(10px);
-	background: rgba(255, 255, 255, 0.5) !important;
+.v-toolbar, .v-navigation-drawer {
+	background: rgba(var(--v-theme-primary), 0.5) !important;
+  color: rgba(var(--v-theme-on-primary), 0.9) !important;
+}
+
+.v-navigation-drawer {
+  .v-list {
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.v-toolbar {
+  backdrop-filter: blur(5px);
 }
 </style>
 
