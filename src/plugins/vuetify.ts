@@ -20,14 +20,14 @@ export default createVuetify({
             light: {
                 colors: {
                     primary: process.env.VUE_APP_PRIMARY_COLOR ?? '#ddd',
-                    'on-primary': process.env.VUE_APP_ON_PRIMARY_COLOR ?? '#000',
+                    'on-primary': process.env.VUE_APP_PRIMARY_FOREGROUND_COLOR ?? '#000',
                 }
             } as ThemeDefinition,
             dark: {
                 dark: true,
                 colors: {
                     primary: process.env.VUE_APP_PRIMARY_COLOR ?? '#222',
-                    'on-primary': process.env.VUE_APP_ON_PRIMARY_COLOR ?? '#fff',
+                    'on-primary': process.env.VUE_APP_PRIMARY_FOREGROUND_COLOR ?? '#fff',
                 }
             } as ThemeDefinition,
         },
