@@ -1,7 +1,7 @@
 <template>
   <v-list-item
       v-if="sortedChildren === null"
-      :title="node.nodeName.replace('-', ' ')"
+      :title="node.nodeName.replaceAll('-', ' ')"
       :to="'/wiki/' + node.location"
       :active="$route.params.location === node.location"
   />
@@ -9,7 +9,7 @@
     <template #activator="{ props }">
       <v-list-item
           v-bind="props"
-          :title="node.nodeName.replace('-', ' ')"
+          :title="node.nodeName.replaceAll('-', ' ')"
       />
     </template>
 

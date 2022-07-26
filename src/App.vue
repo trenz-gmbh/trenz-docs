@@ -179,7 +179,7 @@ export default defineComponent({
 				path.push(part);
 
 				return {
-					text: part.replace('-', ' '),
+					text: part.replaceAll('-', ' '),
 					to: '/wiki/' + path.join('/'),
 					disabled: false,
 				}
@@ -192,7 +192,7 @@ export default defineComponent({
 			}
 
 			let parts = (this.$route.params.location as string).split('/');
-			return parts[parts.length - 1].replace('-', ' ');
+			return parts[parts.length - 1].replaceAll('-', ' ');
 		},
 
 		env() {
