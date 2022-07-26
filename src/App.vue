@@ -100,7 +100,7 @@ export default defineComponent({
 	data() {
 		return {
 			searchQuery: '',
-			drawerOpen: false,
+			drawerOpen: true,
 			searchFieldFocussed: false,
 		}
 	},
