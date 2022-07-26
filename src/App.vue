@@ -195,20 +195,16 @@ export default defineComponent({
 			return parts[parts.length - 1];
 		},
 
-		env() {
-			return process.env.NODE_ENV;
-		},
+		sortedNavTree() {
+			if (this.$store.state.navTree === null) {
+				return null;
+			}
 
-    sortedNavTree() {
-      if (this.$store.state.navTree === null) {
-        return null;
-      }
-
-      // do not sort navTree directly, because it would modify the original array
-      return [...Object.keys(this.$store.state.navTree).map(k => this.$store.state.navTree[k]).filter(n => n.order >= 0)].sort((a, b) => {
-        return a.order - b.order;
-      });
-    }
+			// do not sort navTree directly, because it would modify the original array
+			return [...Object.keys(this.$store.state.navTree).map(k => this.$store.state.navTree[k]).filter(n => n.order >= 0)].sort((a, b) => {
+				return a.order - b.order;
+			});
+		}
 	},
 })
 </script>
