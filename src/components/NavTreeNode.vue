@@ -1,7 +1,7 @@
 <template>
   <v-list-item
       v-if="sortedChildren === null"
-      :title="node.name"
+      :title="node.nodeName.replace('-', ' ')"
       :to="'/wiki/' + node.location"
       :active="$route.params.location === node.location"
   />
@@ -9,7 +9,7 @@
     <template #activator="{ props }">
       <v-list-item
           v-bind="props"
-          :title="node.name"
+          :title="node.nodeName.replace('-', ' ')"
       />
     </template>
 
@@ -34,9 +34,8 @@ export default defineComponent({
       type: Object,
       required: true,
       validator: (n: unknown): boolean => {
-        return Object.hasOwnProperty.call(n, 'name') &&
+        return Object.hasOwnProperty.call(n, 'nodeName') &&
             Object.hasOwnProperty.call(n, 'location') &&
-            Object.hasOwnProperty.call(n, 'children') &&
             Object.hasOwnProperty.call(n, 'order');
       },
     },
@@ -44,7 +43,7 @@ export default defineComponent({
 
   computed: {
     sortedChildren() {
-      if (this.node.children === null) {
+      if (typeof this.node.children === 'undefined') {
         return null;
       }
 
