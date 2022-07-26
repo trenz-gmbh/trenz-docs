@@ -39,11 +39,11 @@ export default defineComponent({
 		node: {
 			type: Object,
 			required: true,
-			validator: (n: unknown): boolean => {
-				return Object.hasOwnProperty.call(n, 'nodeName') &&
-					Object.hasOwnProperty.call(n, 'location') &&
-					Object.hasOwnProperty.call(n, 'order');
-			},
+			validator: (n: unknown): boolean =>
+				Object.hasOwnProperty.call(n, 'nodeName') &&
+				Object.hasOwnProperty.call(n, 'location') &&
+				Object.hasOwnProperty.call(n, 'hasContent') &&
+				Object.hasOwnProperty.call(n, 'order'),
 		},
 	},
 
@@ -58,12 +58,14 @@ export default defineComponent({
 			let toggle = false
 			let navigate = false
 
-			if (expanded && this.active) {
+			const active = this.active || !this.node.hasContent;
+
+			if (expanded && active) {
 				toggle = true
 				this.expanded = false
-			} else if (expanded && !this.active) {
+			} else if (expanded && !active) {
 				navigate = true
-			} else if (!expanded && this.active) {
+			} else if (!expanded && active) {
 				toggle = true
 				this.expanded = true
 			} else {
@@ -76,8 +78,7 @@ export default defineComponent({
 				cb()
 			}
 
-			if (navigate) {
-				// TODO: also check if this node contains content and only then navigate to it
+			if (this.node.hasContent && navigate) {
 				this.$router.push(this.link)
 			}
 		},
