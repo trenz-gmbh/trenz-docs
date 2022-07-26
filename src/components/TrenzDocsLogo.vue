@@ -19,7 +19,6 @@
   flex-direction: row;
   align-items: center;
   font-weight: bold;
-  color: #888;
   font-size: 0.8em;
 
   &:hover {

@@ -36,7 +36,7 @@
 
 			<template #append>
 				<v-row>
-					<v-col style="flex: 1 0" class="ma-2 d-flex align-center justify-center">
+					<v-col style="flex: 1 0" class="ma-2 d-flex align-center justify-center logo-col">
 						<trenz-docs-logo />
 					</v-col>
 				</v-row>
@@ -68,7 +68,11 @@
 <style lang="scss">
 .v-toolbar, .v-navigation-drawer {
 	background: rgba(var(--v-theme-primary), 0.5) !important;
-  color: rgba(var(--v-theme-on-primary), 0.9) !important;
+	color: rgba(var(--v-theme-on-primary), 0.9) !important;
+}
+
+.logo-col {
+	color: rgba(var(--v-theme-on-primary), 0.5) !important;
 }
 
 .v-navigation-drawer {
