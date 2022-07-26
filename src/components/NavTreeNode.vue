@@ -1,22 +1,22 @@
 <template>
   <v-list-item
       v-if="sortedChildren === null"
-      :title="node.nodeName.replaceAll('-', ' ')"
-      :to="'/wiki/' + node.location"
-      :active="$route.params.location === node.location"
+      :title="displayName"
+      :to="link"
+      :active="active"
   />
   <v-list-group v-else>
     <template #activator="{ props }">
       <v-list-item
           v-bind="props"
-          :title="node.nodeName.replaceAll('-', ' ')"
+          :title="displayName"
       />
     </template>
 
     <v-list-item
         title="Overview"
-        :to="'/wiki/' + node.location"
-        :active="$route.params.location === node.location"
+        :to="link"
+        :active="active"
     />
 
     <nav-tree-node v-for="(childNode, i) of sortedChildren" :node="childNode" :key="i"/>
@@ -51,7 +51,19 @@ export default defineComponent({
       return [...Object.keys(this.node.children).map(k => this.node.children[k]).filter(n => n.order >= 0)].sort((a, b) => {
         return a.order - b.order;
       });
-    }
+    },
+
+    displayName() {
+      return this.node.nodeName;
+    },
+
+    link() {
+      return '/wiki/' + this.node.location;
+    },
+
+    active() {
+      return this.$route.params.location === this.node.location;
+    },
   },
 })
 </script>
