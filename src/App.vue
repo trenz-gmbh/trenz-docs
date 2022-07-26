@@ -26,7 +26,7 @@
 				</div>
 			</template>
 
-			<v-list class="on-primary bg-primary">
+			<v-list density="compact" class="on-primary bg-primary">
 				<v-list-item
 					title="Home"
 					:to="{name: 'home'}"
