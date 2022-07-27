@@ -67,7 +67,21 @@
 	</v-app>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+::selection {
+	background: rgba(var(--v-theme-primary), 0.9);
+	color: rgba(var(--v-theme-on-primary), 0.9);
+}
+
+.on-primary,
+.bg-primary {
+	&::selection,
+	& *::selection {
+		background: rgba(var(--v-theme-on-primary), 0.9);
+		color: rgba(var(--v-theme-primary), 0.9);
+	}
+}
+
 .acrylic {
 	backdrop-filter: blur(5px);
 }
