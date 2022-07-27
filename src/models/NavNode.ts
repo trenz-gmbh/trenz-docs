@@ -5,5 +5,6 @@ export interface NavNode {
     order: number;
     location: string;
     nodeName: string;
+    hasContent: boolean;
     children?: NavTree;
 }
