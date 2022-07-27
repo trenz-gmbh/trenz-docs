@@ -1,6 +1,6 @@
 <template>
 	<v-app>
-		<v-navigation-drawer app v-model="drawerOpen" :permanent="true">
+		<v-navigation-drawer app v-model="drawerOpen" :permanent="true" class="bg-primary">
 			<template #prepend>
 				<div class="px-2 border-b d-flex align-center" style="height: 65px">
 					<v-text-field
@@ -26,7 +26,7 @@
 				</div>
 			</template>
 
-			<v-list>
+			<v-list class="on-primary bg-primary">
 				<v-list-item
 					title="Home"
 					:to="{name: 'home'}"
@@ -36,14 +36,14 @@
 
 			<template #append>
 				<v-row>
-					<v-col style="flex: 1 0" class="ma-2 d-flex align-center justify-center logo-col">
+					<v-col style="flex: 1 0" class="ma-2 d-flex align-center justify-center on-primary">
 						<trenz-docs-logo />
 					</v-col>
 				</v-row>
 			</template>
 		</v-navigation-drawer>
 
-		<v-app-bar app :elevation="0" class="toolbar-foreground">
+		<v-app-bar app :elevation="0" class="bg-transparent on-primary acrylic">
 			<template #prepend>
 				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
 			</template>
@@ -52,9 +52,9 @@
 			</v-app-bar-title>
 		</v-app-bar>
 
-		<v-app-bar app class="toolbar-background border-b" :elevation="0"></v-app-bar>
+		<v-app-bar app class="background-toolbar bg-primary border-b" :elevation="0"></v-app-bar>
 
-		<v-main>
+		<v-main class="bg-transparent negate-second-toolbar">
 			<v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0" />
 			<v-container fluid>
 				<router-view :key="$route.fullPath" v-slot="{ Component }">
@@ -67,37 +67,23 @@
 	</v-app>
 </template>
 
-<style lang="scss">
-.v-navigation-drawer {
-	background: rgb(var(--v-theme-primary)) !important;
-	color: rgba(var(--v-theme-on-primary), 0.9) !important;
+<style scoped lang="scss">
+.transparent-list {
+	background: transparent;
+	color: inherit;
 }
 
-.logo-col {
-	color: rgb(var(--v-theme-on-primary)) !important;
-}
-
-.v-navigation-drawer {
-	.v-list {
-		background: transparent;
-		color: inherit;
-	}
-}
-
-.toolbar-foreground {
-	background: transparent !important;
-	color: rgba(var(--v-theme-on-primary), 0.9) !important;
+.acrylic {
 	backdrop-filter: blur(5px);
 }
 
-.toolbar-background {
-	background: rgb(var(--v-theme-primary)) !important;
+.background-toolbar {
 	z-index: 0 !important;
 	margin-top: 0 !important;
 }
 
-.v-main {
-	background: transparent !important;
+.negate-second-toolbar {
+	padding-top: 64px !important;
 }
 </style>
 
