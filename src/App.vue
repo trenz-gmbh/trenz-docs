@@ -43,7 +43,7 @@
 			</template>
 		</v-navigation-drawer>
 
-		<v-app-bar app :elevation="0" class="border-b">
+		<v-app-bar app :elevation="0" class="toolbar-foreground">
 			<template #prepend>
 				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
 			</template>
@@ -51,6 +51,8 @@
 				{{ title }}
 			</v-app-bar-title>
 		</v-app-bar>
+
+		<v-app-bar app class="toolbar-background border-b" :elevation="0"></v-app-bar>
 
 		<v-main>
 			<v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0" />
@@ -66,24 +68,36 @@
 </template>
 
 <style lang="scss">
-.v-toolbar, .v-navigation-drawer {
-	background: rgba(var(--v-theme-primary), 0.5) !important;
+.v-navigation-drawer {
+	background: rgb(var(--v-theme-primary)) !important;
 	color: rgba(var(--v-theme-on-primary), 0.9) !important;
 }
 
 .logo-col {
-	color: rgba(var(--v-theme-on-primary), 0.5) !important;
+	color: rgb(var(--v-theme-on-primary)) !important;
 }
 
 .v-navigation-drawer {
-  .v-list {
-    background: transparent;
-    color: inherit;
-  }
+	.v-list {
+		background: transparent;
+		color: inherit;
+	}
 }
 
-.v-toolbar {
-  backdrop-filter: blur(5px);
+.toolbar-foreground {
+	background: transparent !important;
+	color: rgba(var(--v-theme-on-primary), 0.9) !important;
+	backdrop-filter: blur(5px);
+}
+
+.toolbar-background {
+	background: rgb(var(--v-theme-primary)) !important;
+	z-index: 0 !important;
+	margin-top: 0 !important;
+}
+
+.v-main {
+	background: transparent !important;
 }
 </style>
 
