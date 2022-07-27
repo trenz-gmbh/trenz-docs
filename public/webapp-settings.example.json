@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "primary": "80,120,200",
+    "primary-foreground": "255,255,255"
+  },
+  "api": {
+    "baseUrl": "https://localhost:7262/api/"
+  }
+}

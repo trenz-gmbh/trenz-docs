@@ -127,6 +127,7 @@ import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 import ApiClient from "@/api/ApiClient";
 import {mapGetters} from "vuex";
 import * as api from "@/api";
+import {WebappSettings} from "@/WebappSettings";
 
 export default defineComponent({
   name: 'App',
@@ -138,6 +139,24 @@ export default defineComponent({
 
   async beforeMount() {
     window.addEventListener('keydown', this.handleKeyDown)
+
+    ApiClient.setBaseUrl(window.location.origin)
+    const settings: WebappSettings = await ApiClient.getJson('webapp-settings.json')
+
+    const baseUrl = settings.api.baseUrl;
+    if (typeof baseUrl === 'undefined') {
+      alert('Please add a webapp-settings.json file to the content root.')
+
+      throw new Error('API base url is not set');
+    } else {
+      ApiClient.setBaseUrl(baseUrl);
+    }
+
+    let a = document.querySelectorAll<HTMLElement>('.v-theme--light');
+    a.forEach(root => {
+      root.style.setProperty('--v-theme-primary', settings.theme.primary);
+      root.style.setProperty('--v-theme-on-primary', settings.theme["primary-foreground"]);
+    })
 
     await this.$store.dispatch('loadNavTree');
 
