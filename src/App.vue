@@ -68,11 +68,6 @@
 </template>
 
 <style scoped lang="scss">
-.transparent-list {
-	background: transparent;
-	color: inherit;
-}
-
 .acrylic {
 	backdrop-filter: blur(5px);
 }
