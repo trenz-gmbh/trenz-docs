@@ -13,7 +13,7 @@ services:
     depends_on:
       - api
   api:
-    image: ghcr.io/trenz-gmbh/meilidown:latest
+    image: ghcr.io/trenz-gmbh/trenz-docs-api:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - Meilisearch__Url=http://meilisearch:7700
