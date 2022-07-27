@@ -15,9 +15,8 @@
 			>
 				<v-btn
 					@click.stop="onExpand(props.active, props.onClick)"
-					:active="props.active"
 					:icon="props.appendIcon"
-					:color="props.color"
+					color="transparent"
 					:class="props.class"
 					:flat="true"
 					density="compact"
