@@ -109,6 +109,11 @@ export default defineComponent({
     };
   },
 
+  mounted() {
+    // @ts-expect-error mermaid is globally installed
+    window.mermaid.init({}, ".language-mermaid");
+  },
+
   computed: {
     output() {
       return marked(this.content, this.options);
