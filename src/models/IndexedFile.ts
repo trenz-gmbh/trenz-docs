@@ -1,7 +1,6 @@
-import {ContentFile} from "@/models/ContentFile";
-
-export interface IndexedFile extends ContentFile {
+export interface IndexedFile {
     uid: string;
     name: string;
     location: string;
+    content: string;
 }
