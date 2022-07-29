@@ -5,6 +5,11 @@ import {SearchResult} from "@/models/SearchResult";
 import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
 import ApiClient, {ApiError} from "@/api/ApiClient";
+import IndexStats from "@/models/IndexStats";
+
+function replaceApiHost(content: string): string {
+    return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
+}
 
 function replaceApiHost(content: string): string {
     return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
@@ -16,6 +21,7 @@ export default createStore({
         searchQuery: '',
         searchResults: [],
         searchResultMessage: null,
+        stats: null,
         documents: new Map(),
     } as State,
     getters: {},
@@ -35,7 +41,11 @@ export default createStore({
 
         putDocument(state: State, document: IndexedFile) {
             state.documents.set(document.location, document);
-        }
+        },
+
+        setStats(state: State, stats: IndexStats|null) {
+            state.stats = stats;
+        },
     },
     actions: {
         async loadNavTree({commit}) {
@@ -43,6 +53,9 @@ export default createStore({
         },
 
         async search({commit}, query: string) {
+            // update stats async, don't wait for it
+            api.search.stats().then(stats => commit('setStats', stats));
+
             await commit('setSearchQuery', query);
 
             if (query.length === 0) {
@@ -52,7 +65,7 @@ export default createStore({
             }
 
             try {
-                const results = await api.search(query);
+                const results = await api.search.query(query);
 
                 commit('setSearchResults', {
                     results: results.map(doc => {
