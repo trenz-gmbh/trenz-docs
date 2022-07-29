@@ -6,6 +6,10 @@ import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
 import ApiClient, {ApiError} from "@/api/ApiClient";
 
+function replaceApiHost(content: string): string {
+    return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
+}
+
 export default createStore({
     state: {
         navTree: {},
@@ -51,7 +55,12 @@ export default createStore({
                 const results = await api.search(query);
 
                 commit('setSearchResults', {
-                    results: results,
+                    results: results.map(doc => {
+                        doc.content = replaceApiHost(doc.content);
+                        doc._formatted.content = replaceApiHost(doc._formatted.content);
+
+                        return doc;
+                    }),
                     message: results.length === 0 ? "No results found." : null
                 });
             } catch (e: unknown) {
@@ -105,7 +114,7 @@ export default createStore({
                 return notFoundText;
             }
 
-            doc.content = doc.content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
+            doc.content = replaceApiHost(doc.content);
 
             commit('putDocument', doc);
 
