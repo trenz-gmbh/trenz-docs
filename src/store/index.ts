@@ -11,10 +11,6 @@ function replaceApiHost(content: string): string {
     return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
 }
 
-function replaceApiHost(content: string): string {
-    return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
-}
-
 export default createStore({
     state: {
         navTree: {},
