@@ -71,7 +71,7 @@ export default defineComponent({
 
     totalPages() {
       const results = this.$store.state.search.results;
-      if (results === null) {
+      if (results === null || results.totalHits === 0 || results.limit === 0) {
         return 1;
       }
 
