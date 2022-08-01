@@ -1,11 +1,11 @@
 import {createStore} from 'vuex'
 import {State} from "@/store/State";
 import {IndexedFile} from "@/models/IndexedFile";
-import {SearchResult} from "@/models/SearchResult";
 import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
 import ApiClient, {ApiError} from "@/api/ApiClient";
 import IndexStats from "@/models/IndexStats";
+import {SearchResults} from "@/models/SearchResults";
 
 function replaceApiHost(content: string): string {
     return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
@@ -14,9 +14,12 @@ function replaceApiHost(content: string): string {
 export default createStore({
     state: {
         navTree: {},
-        searchQuery: '',
-        searchResults: [],
-        searchResultMessage: null,
+        search: {
+            message: null,
+            query: "",
+            offset: 0,
+            results: null,
+        },
         stats: null,
         documents: new Map(),
     } as State,
@@ -26,13 +29,14 @@ export default createStore({
             state.navTree = navTree;
         },
 
-        setSearchQuery(state: State, searchQuery: string) {
-            state.searchQuery = searchQuery;
+        setSearchQuery(state: State, {query, offset}: {query: string, offset: number}) {
+            state.search.query = query;
+            state.search.offset = offset;
         },
 
-        setSearchResults(state: State, {results, message}: {results: SearchResult[], message: string|null}) {
-            state.searchResults = results;
-            state.searchResultMessage = message;
+        setSearchResults(state: State, {results, message}: {results: SearchResults|null, message: string|null}) {
+            state.search.results = results;
+            state.search.message = message;
         },
 
         putDocument(state: State, document: IndexedFile) {
@@ -48,29 +52,31 @@ export default createStore({
             commit('setNavTree', await api.documents.navTree());
         },
 
-        async search({commit}, query: string) {
+        async search({commit}, {query, offset, limit}: {query: string, offset: number, limit: number}) {
             // update stats async, don't wait for it
             api.search.stats().then(stats => commit('setStats', stats));
 
-            await commit('setSearchQuery', query);
+            await commit('setSearchQuery', {query, offset});
 
             if (query.length === 0) {
-                commit('setSearchResults', {results: [], message: "Search for something. Your results will be shown here."});
+                commit('setSearchResults', {results: null, message: null});
 
                 return;
             }
 
             try {
-                const results = await api.search.query(query);
+                const results = await api.search.query(query, limit, offset);
+
+                results.hits = results.hits.map(doc => {
+                    doc.content = replaceApiHost(doc.content);
+                    doc._formatted.content = replaceApiHost(doc._formatted.content);
+
+                    return doc;
+                });
 
                 commit('setSearchResults', {
-                    results: results.map(doc => {
-                        doc.content = replaceApiHost(doc.content);
-                        doc._formatted.content = replaceApiHost(doc._formatted.content);
-
-                        return doc;
-                    }),
-                    message: results.length === 0 ? "No results found." : null
+                    results: results,
+                    message: results.hits.length === 0 ? "No results found." : null
                 });
             } catch (e: unknown) {
                 let message = "An unknown error occurred.";
@@ -79,7 +85,7 @@ export default createStore({
                     console.error(e);
                 }
 
-                commit('setSearchResults', {results: [], message});
+                commit('setSearchResults', {results: null, message});
             }
         },
 
