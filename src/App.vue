@@ -43,7 +43,7 @@
 			</template>
 		</v-navigation-drawer>
 
-		<v-app-bar app :elevation="0" class="bg-transparent on-primary acrylic">
+		<v-app-bar app :elevation="0" class="on-primary acrylic">
 			<template #prepend>
 				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
 			</template>
@@ -84,6 +84,7 @@
 
 .acrylic {
 	backdrop-filter: blur(5px);
+	background: rgba(var(--v-theme-primary), 0.5) !important;
 }
 
 .background-toolbar {
