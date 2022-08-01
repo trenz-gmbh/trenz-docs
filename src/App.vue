@@ -84,7 +84,7 @@
 
 .acrylic {
 	backdrop-filter: blur(5px);
-	background: rgba(var(--v-theme-primary), 0.75) !important;
+	background: rgba(var(--v-theme-primary), 0.66) !important;
 }
 
 .background-toolbar {
