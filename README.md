@@ -50,9 +50,11 @@ To deploy a trenz-docs wiki, follow these steps:
    }
    ```
 
-3. optionally: add a `.env` file:
+3. optionally: add a `.env` (or `.env.local`) file:
    ```env
-   APP_PORT=5050
+   VUE_APP_API_BASE=https://localhost:7262/api/
+   VUE_APP_PRIMARY_COLOR='#8af'
+   VUE_APP_PRIMARY_FOREGROUND_COLOR='#000'
    ```
 
 4. run:
