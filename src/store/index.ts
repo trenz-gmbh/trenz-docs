@@ -13,7 +13,7 @@ function replaceApiHost(content: string): string {
 
 export default createStore({
     state: {
-        navTree: {},
+        navTree: {root: {}},
         searchQuery: '',
         searchResults: [],
         searchResultMessage: null,
