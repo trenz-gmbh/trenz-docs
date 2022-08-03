@@ -61,7 +61,8 @@ export default class ApiClient {
         const r = await fetch(
             this.getFullUrl(url),
             {
-                headers: this.buildHeaders()
+                headers: this.buildHeaders(),
+                credentials: "include",
             });
 
         if (r.status > 299)
@@ -80,7 +81,8 @@ export default class ApiClient {
                 body: this.convertToFormData(body),
                 headers: {
                     ...this.buildHeaders()
-                }
+                },
+                credentials: "include",
             });
 
         if (r.status > 299)
@@ -99,7 +101,8 @@ export default class ApiClient {
                 body: this.convertToFormData(body),
                 headers: {
                     ...this.buildHeaders()
-                }
+                },
+                credentials: "include",
             });
 
         if (r.status > 299)
