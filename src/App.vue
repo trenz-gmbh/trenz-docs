@@ -44,14 +44,17 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app :elevation="0" class="on-primary acrylic">
-      <template #prepend>
-        <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
+		<v-app-bar app :elevation="0" class="on-primary acrylic">
+			<template #prepend>
+				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
+			</template>
+			<v-app-bar-title>
+				{{ title }}
+			</v-app-bar-title>
+      <template #append>
+        <a :href="loginUrl">Login</a>
       </template>
-      <v-app-bar-title>
-        {{ title }}
-      </v-app-bar-title>
-    </v-app-bar>
+		</v-app-bar>
 
     <v-app-bar app class="background-toolbar bg-primary border-b" :elevation="0"></v-app-bar>
 
@@ -103,6 +106,7 @@ import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
+import ApiClient from "@/api/ApiClient";
 
 export default defineComponent({
   name: 'App',
@@ -210,16 +214,16 @@ export default defineComponent({
       return parts[parts.length - 1];
     },
 
-    sortedNavTree() {
-      if (this.$store.state.navTree === null) {
-        return null;
-      }
+		sortedNavTree() {
+			// do not sort navTree directly, because it would modify the original array
+			return [...Object.keys(this.$store.state.navTree.root).map(k => this.$store.state.navTree.root[k]).filter(n => n.order >= 0)].sort((a, b) => {
+				return a.order - b.order;
+			});
+    },
 
-      // do not sort navTree directly, because it would modify the original array
-      return [...Object.keys(this.$store.state.navTree).map(k => this.$store.state.navTree[k]).filter(n => n.order >= 0)].sort((a, b) => {
-        return a.order - b.order;
-      });
+    loginUrl() {
+      return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     }
-  },
+	},
 })
 </script>
