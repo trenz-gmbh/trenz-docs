@@ -34,8 +34,9 @@
         />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
         <small v-if="navTreeHasHiddenNodes" class="sign-in-prompt">
-          Some pages require additional permissions to view.
-          <a :href="loginUrl">Click here to sign in</a>
+          Some pages require additional permissions to view.<br/>
+          <a v-if="!isSignedIn" :href="loginUrl">Click here to sign in</a>
+          <a v-else :href="logoutUrl">Sign out</a>
         </small>
       </v-list>
 
@@ -105,6 +106,7 @@
   margin-top: 1rem;
   padding: 0.5rem;
   display: block;
+  text-align: center;
 }
 </style>
 
@@ -115,6 +117,7 @@ import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 import ApiClient from "@/api/ApiClient";
 import {mapGetters} from "vuex";
+import * as api from "@/api";
 
 export default defineComponent({
   name: 'App',
@@ -128,6 +131,8 @@ export default defineComponent({
     window.addEventListener('keydown', this.handleKeyDown)
 
     await this.$store.dispatch('loadNavTree');
+
+    this.isSignedIn = await api.auth.state();
   },
 
   unmounted() {
@@ -139,6 +144,7 @@ export default defineComponent({
       searchQuery: '',
       drawerOpen: true,
       searchFieldFocussed: false,
+      isSignedIn: false,
     }
   },
 
@@ -233,7 +239,11 @@ export default defineComponent({
 
     loginUrl() {
       return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
-    }
+    },
+
+    logoutUrl() {
+      return ApiClient.getBaseUrl() + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+    },
   },
 })
 </script>
