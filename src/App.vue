@@ -33,6 +33,10 @@
           :to="{name: 'home'}"
         />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
+        <small v-if="navTreeHasHiddenNodes" class="sign-in-prompt">
+          Some pages require additional permissions to view.
+          <a :href="loginUrl">Click here to sign in</a>
+        </small>
       </v-list>
 
       <template #append>
@@ -51,9 +55,6 @@
       <v-app-bar-title>
         {{ title }}
       </v-app-bar-title>
-      <template #append>
-        <a :href="loginUrl">Login</a>
-      </template>
     </v-app-bar>
 
     <v-app-bar app class="background-toolbar bg-primary border-b" :elevation="0"></v-app-bar>
@@ -99,6 +100,12 @@
 .negate-second-toolbar {
   padding-top: 64px !important;
 }
+
+.sign-in-prompt {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  display: block;
+}
 </style>
 
 <script lang="ts">
@@ -107,6 +114,7 @@ import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 import ApiClient from "@/api/ApiClient";
+import {mapGetters} from "vuex";
 
 export default defineComponent({
   name: 'App',
@@ -180,6 +188,8 @@ export default defineComponent({
   },
 
   computed: {
+    ...mapGetters(['navTreeHasHiddenNodes']),
+
     breadcrumbItems() {
       if (!this.$route.params.location) {
         return [

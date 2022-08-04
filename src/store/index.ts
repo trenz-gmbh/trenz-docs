@@ -6,6 +6,7 @@ import {NavTree} from "@/models/NavTree";
 import * as api from "@/api";
 import ApiClient, {ApiError} from "@/api/ApiClient";
 import IndexStats from "@/models/IndexStats";
+import {NavNode} from "@/models/NavNode";
 
 function replaceApiHost(content: string): string {
     return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
@@ -13,14 +14,35 @@ function replaceApiHost(content: string): string {
 
 export default createStore({
     state: {
-        navTree: {root: {}},
+        navTree: {root: {}, hasHiddenNodes: false},
         searchQuery: '',
         searchResults: [],
         searchResultMessage: null,
         stats: null,
         documents: new Map(),
     } as State,
-    getters: {},
+    getters: {
+        navTreeHasHiddenNodes(state: State): boolean {
+            const recurseChildren = (children: Record<string, NavNode>): boolean => {
+                for (const child of Object.values(children)) {
+                    if (child.hasHiddenChildren) {
+                        return true;
+                    }
+
+                    if (typeof child.children === 'undefined') {
+                        continue;
+                    }
+
+                    if (recurseChildren(child.children)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            return state.navTree.hasHiddenNodes || recurseChildren(state.navTree.root);
+        }
+    },
     mutations: {
         setNavTree(state: State, navTree: NavTree) {
             state.navTree = navTree;
