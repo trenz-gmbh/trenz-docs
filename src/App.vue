@@ -44,17 +44,17 @@
       </template>
     </v-navigation-drawer>
 
-		<v-app-bar app :elevation="0" class="on-primary acrylic">
-			<template #prepend>
-				<v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
-			</template>
-			<v-app-bar-title>
-				{{ title }}
-			</v-app-bar-title>
+    <v-app-bar app :elevation="0" class="on-primary acrylic">
+      <template #prepend>
+        <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"></v-app-bar-nav-icon>
+      </template>
+      <v-app-bar-title>
+        {{ title }}
+      </v-app-bar-title>
       <template #append>
         <a :href="loginUrl">Login</a>
       </template>
-		</v-app-bar>
+    </v-app-bar>
 
     <v-app-bar app class="background-toolbar bg-primary border-b" :elevation="0"></v-app-bar>
 
@@ -214,16 +214,16 @@ export default defineComponent({
       return parts[parts.length - 1];
     },
 
-		sortedNavTree() {
-			// do not sort navTree directly, because it would modify the original array
-			return [...Object.keys(this.$store.state.navTree.root).map(k => this.$store.state.navTree.root[k]).filter(n => n.order >= 0)].sort((a, b) => {
-				return a.order - b.order;
-			});
+    sortedNavTree() {
+      // do not sort navTree directly, because it would modify the original array
+      return [...Object.keys(this.$store.state.navTree.root).map(k => this.$store.state.navTree.root[k]).filter(n => n.order >= 0)].sort((a, b) => {
+        return a.order - b.order;
+      });
     },
 
     loginUrl() {
       return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     }
-	},
+  },
 })
 </script>
