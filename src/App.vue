@@ -131,7 +131,7 @@ export default defineComponent({
 
 	watch: {
 		async searchQuery(q) {
-			await this.$store.dispatch('search', q);
+			await this.$store.dispatch('search', {query: q, offset: this.$store.state.search.offset, limit: 20});
 			await this.maybeNavigateToSearch();
 		},
 	},
@@ -148,7 +148,7 @@ export default defineComponent({
 		},
 
 		async maybeNavigateToSearch() {
-			if (this.$route.name !== 'search' && this.$store.state.searchQuery.length > 0) {
+			if (this.$route.name !== 'search' && this.$store.state.search.query.length > 0) {
 				await this.$router.push({'name': 'search'})
 			}
 		},

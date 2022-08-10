@@ -1,13 +1,16 @@
 import {IndexedFile} from "@/models/IndexedFile";
 import {NavTree} from "@/models/NavTree";
-import {SearchResult} from "@/models/SearchResult";
 import IndexStats from "@/models/IndexStats";
+import {SearchResults} from "@/models/SearchResults";
 
 export interface State {
     navTree: NavTree;
-    searchQuery: string;
-    searchResults: Array<SearchResult>;
-    searchResultMessage: string|null;
+    search: {
+        message: string|null;
+        query: string;
+        offset: number;
+        results: SearchResults|null;
+    };
     stats: IndexStats|null;
     documents: Map<string, IndexedFile>;
 }
