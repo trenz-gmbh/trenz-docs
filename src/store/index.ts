@@ -39,7 +39,7 @@ export default createStore({
             state.documents.set(document.location, document);
         },
 
-        setStats(state: State, stats: IndexStats|null) {
+        setStats(state: State, stats: IndexStats | null) {
             state.stats = stats;
         },
     },
