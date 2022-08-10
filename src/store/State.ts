@@ -7,7 +7,7 @@ export interface State {
     navTree: NavTree;
     searchQuery: string;
     searchResults: Array<SearchResult>;
-    searchResultMessage: string|null;
-    stats: IndexStats|null;
+    searchResultMessage: string | null;
+    stats: IndexStats | null;
     documents: Map<string, IndexedFile>;
 }
