@@ -33,8 +33,8 @@
           :to="{name: 'home'}"
         />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
-        <small v-if="navTreeHasHiddenNodes" class="sign-in-prompt">
-          Some pages require additional permissions to view.<br/>
+        <small class="sign-in-prompt">
+          <span v-if="navTreeHasHiddenNodes">Some pages require additional permissions to view.</span><br/>
           <a v-if="!isSignedIn" :href="loginUrl">Click here to sign in</a>
           <a v-else :href="logoutUrl">Sign out</a>
         </small>
