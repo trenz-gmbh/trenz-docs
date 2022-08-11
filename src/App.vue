@@ -34,9 +34,14 @@
         />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
         <small class="sign-in-prompt">
-          <span v-if="navTreeHasHiddenNodes">Some pages require additional permissions to view.</span><br/>
-          <a v-if="!isSignedIn" :href="loginUrl">Click here to sign in</a>
-          <a v-else :href="logoutUrl">Sign out</a>
+          <span v-if="navTreeHasHiddenNodes">Some pages may require additional permissions to view.<br/></span>
+          <v-btn size="x-small"
+                 variant="outlined"
+                 :loading="signInButtonLoading"
+                 :href="isSignedIn ? logoutUrl : loginUrl"
+          >
+            {{ isSignedIn ? 'Sign Out' : 'Sign in' }}
+          </v-btn>
         </small>
       </v-list>
 
@@ -103,10 +108,14 @@
 }
 
 .sign-in-prompt {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  display: block;
+  margin: 0.5rem 0.5rem 0;
+  font-size: 0.8rem;
   text-align: center;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 </style>
 
@@ -132,7 +141,10 @@ export default defineComponent({
 
     await this.$store.dispatch('loadNavTree');
 
-    this.isSignedIn = await api.auth.state();
+    api.auth.state().then(result => {
+      this.isSignedIn = result;
+      this.signInButtonLoading = false;
+    });
   },
 
   unmounted() {
@@ -145,6 +157,7 @@ export default defineComponent({
       drawerOpen: true,
       searchFieldFocussed: false,
       isSignedIn: false,
+      signInButtonLoading: true,
     }
   },
 
