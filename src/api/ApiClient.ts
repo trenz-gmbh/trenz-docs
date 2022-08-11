@@ -8,6 +8,7 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
+    public static useAuth = false;
     private static baseUrl: string | null = null;
 
     static setBaseUrl(url: string) {
@@ -62,7 +63,7 @@ export default class ApiClient {
             this.getFullUrl(url),
             {
                 headers: this.buildHeaders(),
-                credentials: "include",
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)
@@ -82,7 +83,7 @@ export default class ApiClient {
                 headers: {
                     ...this.buildHeaders()
                 },
-                credentials: "include",
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)
@@ -102,7 +103,7 @@ export default class ApiClient {
                 headers: {
                     ...this.buildHeaders()
                 },
-                credentials: "include",
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)
