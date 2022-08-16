@@ -14,7 +14,7 @@ function replaceApiHost(content: string): string {
 
 export default createStore({
     state: {
-        navTree: {root: {}, hasHiddenNodes: false},
+        navTree: {root: {}, containsUnauthorizedChildren: false},
         searchQuery: '',
         searchResults: [],
         searchResultMessage: null,
@@ -25,7 +25,7 @@ export default createStore({
         navTreeHasHiddenNodes(state: State): boolean {
             const recurseChildren = (children: Record<string, NavNode>): boolean => {
                 for (const child of Object.values(children)) {
-                    if (child.hasHiddenChildren) {
+                    if (child.containsUnauthorizedChildren) {
                         return true;
                     }
 
@@ -40,7 +40,7 @@ export default createStore({
                 return false;
             }
 
-            return state.navTree.hasHiddenNodes || recurseChildren(state.navTree.root);
+            return state.navTree.containsUnauthorizedChildren || recurseChildren(state.navTree.root);
         }
     },
     mutations: {

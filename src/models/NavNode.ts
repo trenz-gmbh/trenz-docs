@@ -4,6 +4,6 @@ export interface NavNode {
     location: string;
     nodeName: string;
     hasContent: boolean;
-    hasHiddenChildren: boolean;
+    containsUnauthorizedChildren: boolean;
     children?: Record<string, NavNode>;
 }
