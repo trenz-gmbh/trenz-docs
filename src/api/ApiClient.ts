@@ -8,6 +8,7 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
+    public static useAuth = false;
     private static baseUrl: string | null = null;
 
     static setBaseUrl(url: string) {
@@ -61,7 +62,8 @@ export default class ApiClient {
         const r = await fetch(
             this.getFullUrl(url),
             {
-                headers: this.buildHeaders()
+                headers: this.buildHeaders(),
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)
@@ -80,7 +82,8 @@ export default class ApiClient {
                 body: this.convertToFormData(body),
                 headers: {
                     ...this.buildHeaders()
-                }
+                },
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)
@@ -99,7 +102,8 @@ export default class ApiClient {
                 body: this.convertToFormData(body),
                 headers: {
                     ...this.buildHeaders()
-                }
+                },
+                credentials: this.useAuth ? "include" : "omit",
             });
 
         if (r.status > 299)

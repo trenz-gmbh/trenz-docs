@@ -33,6 +33,16 @@
           :to="{name: 'home'}"
         />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
+        <small class="sign-in-prompt">
+          <span v-if="navTreeHasHiddenNodes">Some pages may require additional permissions to view.<br/></span>
+          <v-btn size="x-small"
+                 variant="outlined"
+                 :loading="signInButtonLoading"
+                 :href="isSignedIn ? logoutUrl : loginUrl"
+          >
+            {{ isSignedIn ? 'Sign Out' : 'Sign in' }}
+          </v-btn>
+        </small>
       </v-list>
 
       <template #append>
@@ -96,6 +106,17 @@
 .negate-second-toolbar {
   padding-top: 64px !important;
 }
+
+.sign-in-prompt {
+  margin: 0.5rem 0.5rem 0;
+  font-size: 0.8rem;
+  text-align: center;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
 </style>
 
 <script lang="ts">
@@ -103,6 +124,9 @@ import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
+import ApiClient from "@/api/ApiClient";
+import {mapGetters} from "vuex";
+import * as api from "@/api";
 
 export default defineComponent({
   name: 'App',
@@ -116,6 +140,11 @@ export default defineComponent({
     window.addEventListener('keydown', this.handleKeyDown)
 
     await this.$store.dispatch('loadNavTree');
+
+    api.auth.state().then(result => {
+      this.isSignedIn = result;
+      this.signInButtonLoading = false;
+    });
   },
 
   unmounted() {
@@ -127,6 +156,8 @@ export default defineComponent({
       searchQuery: '',
       drawerOpen: true,
       searchFieldFocussed: false,
+      isSignedIn: false,
+      signInButtonLoading: true,
     }
   },
 
@@ -176,6 +207,8 @@ export default defineComponent({
   },
 
   computed: {
+    ...mapGetters(['navTreeHasHiddenNodes']),
+
     breadcrumbItems() {
       if (!this.$route.params.location) {
         return [
@@ -211,15 +244,19 @@ export default defineComponent({
     },
 
     sortedNavTree() {
-      if (this.$store.state.navTree === null) {
-        return null;
-      }
-
       // do not sort navTree directly, because it would modify the original array
-      return [...Object.keys(this.$store.state.navTree).map(k => this.$store.state.navTree[k]).filter(n => n.order >= 0)].sort((a, b) => {
+      return [...Object.keys(this.$store.state.navTree.root).map(k => this.$store.state.navTree.root[k]).filter(n => n.order >= 0)].sort((a, b) => {
         return a.order - b.order;
       });
-    }
+    },
+
+    loginUrl() {
+      return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+    },
+
+    logoutUrl() {
+      return ApiClient.getBaseUrl() + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+    },
   },
 })
 </script>
