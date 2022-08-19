@@ -6,4 +6,5 @@ export interface WebappSettings {
 	api: {
 		baseUrl: string;
 	}
+	useAuth: boolean;
 }
