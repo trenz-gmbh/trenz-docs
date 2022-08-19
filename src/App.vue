@@ -124,13 +124,13 @@ import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
-import ApiClient from "@/api/ApiClient";
 import {mapGetters} from "vuex";
 import * as api from "@/api";
-import {WebappSettings} from "@/WebappSettings";
 
 export default defineComponent({
   name: 'App',
+
+  inject: ['$settings'],
 
   components: {
     TrenzDocsLogo,
@@ -140,34 +140,20 @@ export default defineComponent({
   async beforeMount() {
     window.addEventListener('keydown', this.handleKeyDown)
 
-    ApiClient.setBaseUrl(window.location.origin)
-    const settings: WebappSettings = await ApiClient.getJson('webapp-settings.json')
-
-    const baseUrl = settings.api.baseUrl;
-    if (typeof baseUrl === 'undefined') {
-      alert('Please add a webapp-settings.json file to the content root.')
-
-      throw new Error('API base url is not set');
-    } else {
-      ApiClient.setBaseUrl(baseUrl);
-    }
-
-    if (settings.useAuth) {
-      ApiClient.useAuth = true;
-    }
-
-    let a = document.querySelectorAll<HTMLElement>('.v-theme--light');
-    a.forEach(root => {
-      root.style.setProperty('--v-theme-primary', settings.theme.primary);
-      root.style.setProperty('--v-theme-on-primary', settings.theme["primary-foreground"]);
-    })
-
     await this.$store.dispatch('loadNavTree');
 
     api.auth.state().then(result => {
       this.isSignedIn = result;
       this.signInButtonLoading = false;
     });
+  },
+
+  mounted() {
+    let allThemed = document.querySelectorAll<HTMLElement>('.v-theme--light, .v-theme--dark');
+    allThemed.forEach(el => {
+      el.style.setProperty('--v-theme-primary', this.$settings.theme.primary);
+      el.style.setProperty('--v-theme-on-primary', this.$settings.theme["primary-foreground"]);
+    })
   },
 
   unmounted() {
@@ -274,11 +260,11 @@ export default defineComponent({
     },
 
     loginUrl() {
-      return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+      return this.$settings.api.baseUrl + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     },
 
     logoutUrl() {
-      return ApiClient.getBaseUrl() + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+      return this.$settings.api.baseUrl + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     },
   },
 })
