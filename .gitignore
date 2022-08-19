@@ -8,6 +8,7 @@ node_modules
 .env.*.local
 appsettings.local.json
 public/webapp-settings.json
+webapp-settings.local*.json
 
 # Log files
 npm-debug.log*

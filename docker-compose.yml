@@ -5,13 +5,13 @@ services:
     build:
       context: .
       target: final
-      args:
-        - VUE_APP_API_BASE=http://localhost:5001/api/
     ports:
       - "5000:80"
     restart: unless-stopped
     depends_on:
       - api
+    volumes:
+      - ./webapp-settings.local.json:/usr/share/nginx/html/webapp-settings.json
   api:
     image: ghcr.io/trenz-gmbh/trenz-docs-api:latest
     environment:
