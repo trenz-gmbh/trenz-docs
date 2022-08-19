@@ -152,6 +152,10 @@ export default defineComponent({
       ApiClient.setBaseUrl(baseUrl);
     }
 
+    if (settings.useAuth) {
+      ApiClient.useAuth = true;
+    }
+
     let a = document.querySelectorAll<HTMLElement>('.v-theme--light');
     a.forEach(root => {
       root.style.setProperty('--v-theme-primary', settings.theme.primary);
