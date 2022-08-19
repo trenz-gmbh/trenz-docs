@@ -106,7 +106,7 @@ To deploy a trenz-docs wiki, follow these steps:
    docker-compose up -d
    ```
 
-5. access your new wiki at hosted locally:
+5. access your new wiki hosted at:
    ```bash
    http://localhost:<FRONTEND PORT>
    ```
