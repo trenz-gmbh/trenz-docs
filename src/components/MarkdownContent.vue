@@ -21,12 +21,12 @@ code:not(pre > code) {
   word-break: break-all;
 }
 
-code[class*=language-] {
+code {
   overflow: initial;
   padding: 0;
 }
 
-code[class*=language-] .line-number {
+code .line-number {
   display: inline-block;
   margin-right: 1ch;
   padding-right: 1ch;
