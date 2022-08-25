@@ -21,14 +21,26 @@ code:not(pre > code) {
   word-break: break-all;
 }
 
-code[class*=language-] {
+pre > code, code[class*=language-] {
   overflow: initial;
+  padding: 0;
+}
+
+code .line-number {
+  display: inline-block;
+  margin-right: 1ch;
+  padding-right: 1ch;
+  user-select: none;
+  text-align: right;
+  border-right: solid 1px $code-fence-border;
 }
 
 pre {
   border: solid 1px $code-fence-border;
   overflow-x: auto;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 img {
@@ -90,18 +102,29 @@ export default defineComponent({
         smartypants: true,
         highlight(code: string, lang: string, callback?: (error: unknown, code?: string) => void): string | void {
           try {
-            let html;
+            let html
             if (!lang || !Prism.languages[lang]) {
-              html = code;
+              html = code
             } else {
-              html = Prism.highlight(code, Prism.languages[lang], lang);
+              html = Prism.highlight(code, Prism.languages[lang], lang)
             }
 
-            if (callback) callback(null, html);
-            else return html;
+            let output = "";
+            const lines = html.split(/\n/gm)
+            if (lines.length > 1) {
+              const digitCount = lines.length.toString().length;
+              for (let i = 0; i < lines.length; i++) {
+                output += `<span class="line-number token comment" style="width: ${digitCount + 1}ch">${i + 1}</span>${lines[i]}\n`;
+              }
+            } else {
+              output = html;
+            }
+
+            if (callback) callback(null, output)
+            else return output
           } catch (e) {
-            if (callback) callback(e);
-            else throw e;
+            if (callback) callback(e)
+            else throw e
           }
         },
       } as marked.MarkedOptions,
