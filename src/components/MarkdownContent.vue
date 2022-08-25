@@ -39,6 +39,8 @@ pre {
   border: solid 1px $code-fence-border;
   overflow-x: auto;
   padding: 0 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 img {
