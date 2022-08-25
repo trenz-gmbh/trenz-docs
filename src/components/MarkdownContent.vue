@@ -86,7 +86,6 @@ export default defineComponent({
     return {
       options: {
         gfm: true,
-        breaks: true, // requires gfm to be true
         mangle: true,
         smartypants: true,
         highlight(code: string, lang: string, callback?: (error: unknown, code?: string) => void): string | void {
