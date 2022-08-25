@@ -23,12 +23,22 @@ code:not(pre > code) {
 
 code[class*=language-] {
   overflow: initial;
+  padding: 0;
+}
+
+code[class*=language-] .line-number {
+  display: inline-block;
+  margin-right: 1ch;
+  padding-right: 1ch;
+  user-select: none;
+  text-align: right;
+  border-right: solid 1px $code-fence-border;
 }
 
 pre {
   border: solid 1px $code-fence-border;
   overflow-x: auto;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 img {
@@ -91,18 +101,25 @@ export default defineComponent({
         smartypants: true,
         highlight(code: string, lang: string, callback?: (error: unknown, code?: string) => void): string | void {
           try {
-            let html;
+            let html
             if (!lang || !Prism.languages[lang]) {
-              html = code;
+              html = code
             } else {
-              html = Prism.highlight(code, Prism.languages[lang], lang);
+              html = Prism.highlight(code, Prism.languages[lang], lang)
             }
 
-            if (callback) callback(null, html);
-            else return html;
+            const lines = html.split(/\n/gm)
+            const digitCount = lines.length.toString().length;
+            let output = "";
+            for (let i = 0; i < lines.length; i++) {
+              output += `<span class="line-number token comment" style="width: ${digitCount + 1}ch">${i + 1}</span>${lines[i]}\r\n`;
+            }
+
+            if (callback) callback(null, output)
+            else return output
           } catch (e) {
-            if (callback) callback(e);
-            else throw e;
+            if (callback) callback(e)
+            else throw e
           }
         },
       } as marked.MarkedOptions,
