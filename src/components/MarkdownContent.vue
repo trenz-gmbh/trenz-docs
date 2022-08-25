@@ -21,7 +21,7 @@ code:not(pre > code) {
   word-break: break-all;
 }
 
-code, code[class*=language-] {
+pre > code, code[class*=language-] {
   overflow: initial;
   padding: 0;
 }
