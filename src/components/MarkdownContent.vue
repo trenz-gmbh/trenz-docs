@@ -111,7 +111,7 @@ export default defineComponent({
 
             let output = "";
             const lines = html.split(/\n/gm)
-            if (lines.length > 1) {
+            if (lang !== 'mermaid' && lines.length > 1) {
               const digitCount = lines.length.toString().length;
               for (let i = 0; i < lines.length; i++) {
                 output += `<span class="line-number token comment" style="width: ${digitCount + 1}ch">${i + 1}</span>${lines[i]}\n`;
