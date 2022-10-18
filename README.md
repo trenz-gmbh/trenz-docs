@@ -90,6 +90,7 @@ To deploy a trenz-docs wiki, follow these steps:
 3. add a `webapp-settings.local.json` and add your customer-facing api endpoint:
    ```json 
    {
+     "name": "<YOUR DOCS NAME>",
      "theme": {
        "primary": "80,120,200",
        "primary-foreground": "255,255,255"
