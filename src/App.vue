@@ -116,6 +116,10 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+
+  & .v-btn__loader {
+    transform: scale(0.75);
+  }
 }
 </style>
 
