@@ -7,6 +7,7 @@ import * as api from "@/api";
 import ApiClient, {ApiError} from "@/api/ApiClient";
 import IndexStats from "@/models/IndexStats";
 import {NavNode} from "@/models/NavNode";
+import {WebappSettings} from "@/WebappSettings";
 
 function replaceApiHost(content: string): string {
     return content.replaceAll("%API_HOST%", ApiClient.getBaseUrl()?.slice(0, -1) ?? "/api");
@@ -14,6 +15,7 @@ function replaceApiHost(content: string): string {
 
 export default createStore({
     state: {
+        settings: null,
         navTree: {root: {}, containsUnauthorizedChildren: false},
         searchQuery: '',
         searchResults: [],
@@ -64,10 +66,36 @@ export default createStore({
         setStats(state: State, stats: IndexStats | null) {
             state.stats = stats;
         },
+
+        setSettings(state: State, settings: WebappSettings | null) {
+            state.settings = settings;
+        }
     },
     actions: {
         async loadNavTree({commit}) {
             commit('setNavTree', await api.documents.navTree());
+        },
+
+        async loadWebAppSettings({commit}): Promise<WebappSettings> {
+            ApiClient.setBaseUrl(window.location.origin)
+            const settings: WebappSettings = await ApiClient.getJson('webapp-settings.json');
+
+            const baseUrl = settings.api.baseUrl;
+            if (typeof baseUrl === 'undefined') {
+                alert('Please add a webapp-settings.json file to the content root.')
+
+                throw new Error('API base url is not set');
+            } else {
+                ApiClient.setBaseUrl(baseUrl);
+            }
+
+            if (settings.useAuth) {
+                ApiClient.useAuth = true;
+            }
+
+            commit('setSettings', settings);
+
+            return settings;
         },
 
         async search({commit}, query: string) {
