@@ -17,6 +17,8 @@ export default createVuetify({
     theme: {
         defaultTheme: 'light',
         themes: {
+            // The primary and on-primary values get overridden by the values in public/webapp-settings.json at runtime.
+            // They may be visible until the settings got loaded and applied.
             light: {
                 colors: {
                     primary: '#ddd',
