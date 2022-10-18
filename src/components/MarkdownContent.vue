@@ -68,6 +68,25 @@ h4, h5, h6 {
     margin-bottom: 0.5rem;
   }
 }
+
+ol.table-of-contents {
+  &, ol {
+    counter-reset: item
+  }
+
+  li {
+    display: block;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  li:before {
+    content: counters(item, ".") " ";
+    counter-increment: item
+  }
+}
 </style>
 
 <script lang="ts">
@@ -83,6 +102,7 @@ import 'prismjs/components/prism-csharp.min.js'
 import 'prismjs/components/prism-json.min.js'
 import 'prismjs/components/prism-toml.min.js'
 import 'prismjs/components/prism-ini.min.js'
+import TrenzMarkdownRenderer from "@/TrenzMarkdownRenderer";
 
 export default defineComponent({
   name: "MarkdownContent",
@@ -127,7 +147,8 @@ export default defineComponent({
             else throw e
           }
         },
-      } as marked.MarkedOptions,
+      } as marked.MarkedOptions & { renderer: TrenzMarkdownRenderer },
+      toc: "",
     };
   },
 
@@ -138,8 +159,14 @@ export default defineComponent({
 
   computed: {
     output() {
-      return marked(this.content, this.options);
-    }
+      const renderer = new TrenzMarkdownRenderer()
+      const opts = Object.assign({}, this.options);
+      opts.renderer = renderer;
+
+      const output = marked(this.content, opts);
+
+      return renderer.toc() + output;
+    },
   },
 })
 </script>
