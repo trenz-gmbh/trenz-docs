@@ -1,10 +1,11 @@
 export interface WebappSettings {
-	theme: {
-		primary: string;
-		'primary-foreground': string;
-	}
-	api: {
-		baseUrl: string;
-	}
-	useAuth: boolean;
+    name: string;
+    theme: {
+        primary: string;
+        'primary-foreground': string;
+    }
+    api: {
+        baseUrl: string;
+    }
+    useAuth: boolean;
 }

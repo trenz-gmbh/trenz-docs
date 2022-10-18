@@ -1,4 +1,5 @@
 {
+  "name": "My Docs",
   "theme": {
     "primary": "80,120,200",
     "primary-foreground": "255,255,255"
