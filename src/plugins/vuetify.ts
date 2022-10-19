@@ -17,17 +17,19 @@ export default createVuetify({
     theme: {
         defaultTheme: 'light',
         themes: {
+            // The primary and on-primary values get overridden by the values in public/webapp-settings.json at runtime.
+            // They may be visible until the settings got loaded and applied.
             light: {
                 colors: {
-                    primary: process.env.VUE_APP_PRIMARY_COLOR ?? '#ddd',
-                    'on-primary': process.env.VUE_APP_PRIMARY_FOREGROUND_COLOR ?? '#000',
+                    primary: '#ddd',
+                    'on-primary': '#000',
                 }
             } as ThemeDefinition,
             dark: {
                 dark: true,
                 colors: {
-                    primary: process.env.VUE_APP_PRIMARY_COLOR ?? '#222',
-                    'on-primary': process.env.VUE_APP_PRIMARY_FOREGROUND_COLOR ?? '#fff',
+                    primary: '#222',
+                    'on-primary': '#fff',
                 }
             } as ThemeDefinition,
         },

@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import ContentView from "@/views/ContentView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import store from "@/store";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -35,17 +36,18 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes,
 })
 
 router.beforeEach((to, from, next) => {
+    const appName = store.state.settings?.name ?? 'Loading...'
     if (to.meta.title) {
-        document.title = to.meta.title + ' \u2022 ' + process.env.VUE_APP_NAME;
+        document.title = to.meta.title + ' \u2022 ' + appName;
     } else if (to.params.location) {
-        document.title = (to.params.location as string).split('/').pop() + ' \u2022 ' + process.env.VUE_APP_NAME;
+        document.title = (to.params.location as string).split('/').pop() + ' \u2022 ' + appName;
     } else {
-        document.title = process.env.VUE_APP_NAME;
+        document.title = appName;
     }
 
     if (Object.hasOwnProperty.call(to.query, 'error')) {

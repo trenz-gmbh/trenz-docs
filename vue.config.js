@@ -31,4 +31,11 @@ module.exports = defineConfig({
         allowedHosts: 'all',
         server: serverOpts,
     },
+
+    chainWebpack: config => {
+        config.plugin('copy').tap(options => {
+            options[0].patterns[0].globOptions.ignore.push('**/webapp-settings.example.json')
+            return options
+        })
+    }
 })

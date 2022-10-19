@@ -2,15 +2,12 @@ FROM node:lts-alpine as build
 
 WORKDIR /app
 
-ARG VUE_APP_API_BASE
-ENV VUE_APP_API_BASE $VUE_APP_API_BASE
-
 # add node binaries to path
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install dependencies and build tools
 COPY package*.json ./
-RUN npm install --silent
+RUN npm ci
 
 # build app
 COPY . .

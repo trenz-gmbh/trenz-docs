@@ -1,4 +1,7 @@
+**/.git
+.github/
 node_modules/
 .env.local
+*.local.json
 Dockerfile*
 README.md

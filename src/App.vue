@@ -128,12 +128,13 @@ import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
 import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
-import ApiClient from "@/api/ApiClient";
 import {mapGetters} from "vuex";
 import * as api from "@/api";
 
 export default defineComponent({
   name: 'App',
+
+  inject: ['$settings'],
 
   components: {
     TrenzDocsLogo,
@@ -149,6 +150,14 @@ export default defineComponent({
       this.isSignedIn = result;
       this.signInButtonLoading = false;
     });
+  },
+
+  mounted() {
+    let allThemed = document.querySelectorAll<HTMLElement>('.v-theme--light, .v-theme--dark');
+    allThemed.forEach(el => {
+      el.style.setProperty('--v-theme-primary', this.$settings.theme.primary);
+      el.style.setProperty('--v-theme-on-primary', this.$settings.theme["primary-foreground"]);
+    })
   },
 
   unmounted() {
@@ -255,11 +264,11 @@ export default defineComponent({
     },
 
     loginUrl() {
-      return ApiClient.getBaseUrl() + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+      return this.$settings.api.baseUrl + "auth/transfer?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     },
 
     logoutUrl() {
-      return ApiClient.getBaseUrl() + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
+      return this.$settings.api.baseUrl + "auth/signout?returnUrl=" + encodeURI(window.location.origin + this.$route.fullPath);
     },
   },
 })
