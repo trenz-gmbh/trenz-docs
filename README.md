@@ -1,6 +1,7 @@
 # trenz-docs
 
 [![Node.js CI](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/node.js.yml/badge.svg)](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/node.js.yml)
+[![Docker Image CI](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/docker-image.yml/badge.svg)](https://github.com/trenz-gmbh/trenz-docs/actions/workflows/docker-image.yml)
 
 ## Project setup
 
