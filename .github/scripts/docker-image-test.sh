@@ -6,8 +6,8 @@ set -e
 # copy webapp settings
 cp public/webapp-settings.example.json webapp-settings.local.json
 
-# start frontend server
-container_id=$(docker-compose up -d)
+# start server
+docker-compose up -d
 
 # test if the server is running and serves files
 requested_settings=$(curl http://localhost:5000/webapp-settings.json)
@@ -32,7 +32,7 @@ echo "$requested_homepage"
 echo "Server seems to respond correctly."
 
 # shutdown server
-docker-compose stop "$container_id"
+docker-compose down
 
 # cleanup
 rm webapp-settings.local.json
