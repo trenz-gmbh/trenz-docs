@@ -36,3 +36,5 @@ docker-compose stop "$container_id"
 
 # cleanup
 rm webapp-settings.local.json
+
+exit 0
