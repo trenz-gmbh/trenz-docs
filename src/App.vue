@@ -152,12 +152,8 @@ export default defineComponent({
     });
   },
 
-  mounted() {
-    let allThemed = document.querySelectorAll<HTMLElement>('.v-theme--light, .v-theme--dark');
-    allThemed.forEach(el => {
-      el.style.setProperty('--v-theme-primary', this.$settings.theme.primary);
-      el.style.setProperty('--v-theme-on-primary', this.$settings.theme["primary-foreground"]);
-    })
+  async mounted() {
+    await this.$store.dispatch('applyWebAppSettings');
   },
 
   unmounted() {

@@ -76,26 +76,52 @@ export default createStore({
             commit('setNavTree', await api.documents.navTree());
         },
 
-        async loadWebAppSettings({commit}): Promise<WebappSettings> {
+        async loadWebAppSettings({commit, dispatch}): Promise<WebappSettings> {
             ApiClient.setBaseUrl(window.location.origin)
             const settings: WebappSettings = await ApiClient.getJson('webapp-settings.json');
 
-            const baseUrl = settings.api.baseUrl;
+            commit('setSettings', settings);
+            await dispatch('applyWebAppSettings');
+
+            return settings;
+        },
+
+        async applyWebAppSettings({state}) {
+            const settings = state.settings
+            if (!settings) return
+
+            const baseUrl = settings.api.baseUrl
             if (typeof baseUrl === 'undefined') {
                 alert('Please add a webapp-settings.json file to the content root.')
 
-                throw new Error('API base url is not set');
+                throw new Error('API base url is not set')
             } else {
-                ApiClient.setBaseUrl(baseUrl);
+                ApiClient.setBaseUrl(baseUrl)
             }
 
             if (settings.useAuth) {
-                ApiClient.useAuth = true;
+                ApiClient.useAuth = true
             }
 
-            commit('setSettings', settings);
+            const themedElements = document.querySelectorAll<HTMLElement>('.v-theme--light, .v-theme--dark')
 
-            return settings;
+            const newPrimary = settings.theme.primary
+            if (newPrimary) {
+                themedElements.forEach(element => element.style.setProperty('--v-theme-primary', newPrimary))
+
+                let themeColorTag = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+                if (!themeColorTag) {
+                    themeColorTag = document.createElement('meta')
+                    themeColorTag.setAttribute('name', 'theme-color')
+                    document.head.insertAdjacentElement("beforeend", themeColorTag)
+                }
+                themeColorTag.setAttribute('content', `rgb(${newPrimary})`)
+            }
+
+            const newOnPrimary = settings.theme["primary-foreground"]
+            if (newOnPrimary) {
+                themedElements.forEach(element => element.style.setProperty('--v-theme-on-primary', newOnPrimary))
+            }
         },
 
         async search({commit}, query: string) {
