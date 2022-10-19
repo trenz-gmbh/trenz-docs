@@ -6,16 +6,12 @@ export default class TrenzMarkdownRenderer extends marked.Renderer {
     toc(): string {
         if (this.headings.length < 4) return "";
 
-        return this.renderTocLevel(0, 1).html;
+        const table = this.renderTocLevel(0, 1).html;
+        return `<details class="table-of-contents"><summary>Contents</summary>${table}</details>`;
     }
 
     private renderTocLevel(offset: number, level: number): {html: string, newOffset: number} {
-        let html: string
-        if (offset == 0) {
-            html = `<ol class="table-of-contents">`
-        } else {
-            html = `<ol>`
-        }
+        let html = `<ol>`
         for (let h = this.headings[offset]; offset < this.headings.length && h.level === level; h = this.headings[++offset]) {
             html += `<li><a href="#${h.id}">${h.text}</a>`
 

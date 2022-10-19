@@ -69,22 +69,62 @@ h4, h5, h6 {
   }
 }
 
-ol.table-of-contents {
-  &, ol {
-    counter-reset: item
-  }
+details.table-of-contents {
+  border: rgb(var(--v-theme-primary)) 1px solid;
+  border-radius: 8px;
+  display: inline-block;
 
-  li {
-    display: block;
+  summary {
+    text-align: center;
+    font-weight: bold;
+    list-style: none;
+    padding: 0 0.25rem;
+    cursor: pointer;
 
-    a {
-      text-decoration: none;
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:before {
+      content: '\25B6'; // right arrow
+      float: left;
+      margin-right: 0.5rem;
     }
   }
 
-  li:before {
-    content: counters(item, ".") " ";
-    counter-increment: item
+  &[open] {
+    summary {
+      &:before {
+        content: '\25BC'; // down arrow
+      }
+    }
+  }
+
+  & > ol {
+    padding: 0.5rem 1rem 0.5rem 0;
+
+    &, ol {
+      counter-reset: item
+    }
+
+    li {
+      display: block;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+          text-decoration: underline rgb(var(--v-theme-primary)) 1px;
+        }
+      }
+
+      &:before {
+        content: counters(item, ".") " ";
+        counter-increment: item;
+        margin-right: 0.5rem;
+      }
+    }
   }
 }
 </style>
