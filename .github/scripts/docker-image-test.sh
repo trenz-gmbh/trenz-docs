@@ -25,13 +25,6 @@ echo "$requested_settings"
 
 # test if homepage gets served without errors
 requested_homepage=$(curl http://localhost:5000/)
-actual_homepage=$(cat dist/index.html)
-if [ "$actual_homepage" != "$requested_homepage" ]; then
-  echo "Could not verify server functionality. Received homepage:"
-  echo "$requested_homepage"
-  exit 1
-fi
-
 echo "Received homepage:"
 echo "$requested_homepage"
 
