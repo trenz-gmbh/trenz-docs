@@ -26,6 +26,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - run: cp ./public/webapp-settings.example.json ./webapp-settings.local.json
+      - name: Test docker-compose.yml
+        run: timeout 10s docker-compose run --rm frontend
       - name: Build and push image
         uses: docker/build-push-action@v3
         if: github.event_name != 'pull_request'
