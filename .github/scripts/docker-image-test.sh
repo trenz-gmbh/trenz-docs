@@ -16,11 +16,11 @@ requested_settings=$(curl http://localhost:5000/webapp-settings.json)
 actual_settings=$(cat webapp-settings.local.json)
 if [ "$actual_settings" != "$requested_settings" ]; then
   echo "Could not verify server functionality. Received:"
+  echo "$requested_settings"
   exit 1
-else
-  echo "Received settings:"
 fi
 
+echo "Received settings:"
 echo "$requested_settings"
 
 # test if homepage gets served without errors
