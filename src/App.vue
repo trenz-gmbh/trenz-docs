@@ -126,7 +126,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
-import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 import {mapGetters} from "vuex";
 import * as api from "@/api";
@@ -152,12 +151,8 @@ export default defineComponent({
     });
   },
 
-  mounted() {
-    let allThemed = document.querySelectorAll<HTMLElement>('.v-theme--light, .v-theme--dark');
-    allThemed.forEach(el => {
-      el.style.setProperty('--v-theme-primary', this.$settings.theme.primary);
-      el.style.setProperty('--v-theme-on-primary', this.$settings.theme["primary-foreground"]);
-    })
+  async mounted() {
+    await this.$store.dispatch('applyWebAppSettings');
   },
 
   unmounted() {
@@ -208,11 +203,9 @@ export default defineComponent({
           this.drawerOpen = true;
         }
 
-        const searchField = this.$refs.search as VTextField;
-
         if (!this.searchFieldFocussed) {
           this.searchQuery = '';
-          searchField.focus();
+          (this.$refs.search as {focus: () => void}).focus();
           e.preventDefault();
         }
       }
