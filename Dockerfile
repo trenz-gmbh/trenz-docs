@@ -24,4 +24,4 @@ COPY nginx/nginx.conf /etc/nginx/conf.d
 
 # start nginx
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off; worker_processes auto;"]
+CMD ["nginx", "-g", "daemon off;"]
