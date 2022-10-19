@@ -66,7 +66,7 @@
     <v-app-bar app class="background-toolbar bg-primary border-b" :elevation="0"></v-app-bar>
 
     <v-main class="bg-transparent negate-second-toolbar">
-      <v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0"/>
+      <v-breadcrumbs v-if="breadcrumbItems.length > 1" :items="breadcrumbItems" class="ms-0 pb-0"/>
       <v-container fluid>
         <router-view :key="$route.fullPath" v-slot="{ Component }">
           <keep-alive>
