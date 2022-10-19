@@ -7,7 +7,8 @@
 
 $code-color: #c92c2c;
 $code-background-color: #eeeeee;
-$code-fence-border: #00000044;
+$code-fence-dark: #888A;
+$code-fence-light: #0004;
 
 ol, ul {
   margin-left: 1rem;
@@ -32,15 +33,35 @@ code .line-number {
   padding-right: 1ch;
   user-select: none;
   text-align: right;
-  border-right: solid 1px $code-fence-border;
+  border-right: solid 1px rgb(var(--v-theme-primary));
 }
 
 pre {
-  border: solid 1px $code-fence-border;
+  border: solid 1px;
   overflow-x: auto;
   padding: 0 0.5rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre {
+    border-color: $code-fence-dark;
+  }
+
+  code .line-number {
+    border-right-color: $code-fence-dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  pre {
+    border-color: $code-fence-light;
+  }
+
+  code .line-number {
+    border-right-color: $code-fence-light;
+  }
 }
 
 img {
