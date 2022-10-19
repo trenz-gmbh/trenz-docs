@@ -126,7 +126,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavTreeNode from "@/components/NavTreeNode.vue";
-import {VTextField} from "vuetify/components";
 import TrenzDocsLogo from "@/components/TrenzDocsLogo.vue";
 import {mapGetters} from "vuex";
 import * as api from "@/api";
@@ -204,11 +203,9 @@ export default defineComponent({
           this.drawerOpen = true;
         }
 
-        const searchField = this.$refs.search as VTextField;
-
         if (!this.searchFieldFocussed) {
           this.searchQuery = '';
-          searchField.focus();
+          (this.$refs.search as {focus: () => void}).focus();
           e.preventDefault();
         }
       }
