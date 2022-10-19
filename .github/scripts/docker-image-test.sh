@@ -28,7 +28,7 @@ requested_homepage=$(curl http://localhost:5000/)
 actual_homepage=$(cat public/index.html)
 if [ "$actual_homepage" != "$requested_homepage" ]; then
   echo "Could not verify server functionality. Received homepage:"
-  echo "$requested_settings"
+  echo "$requested_homepage"
   exit 1
 fi
 
