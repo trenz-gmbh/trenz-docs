@@ -7,5 +7,6 @@
   "api": {
     "baseUrl": "https://localhost:7262/api/"
   },
-  "useAuth": false
+  "useAuth": false,
+  "homeUrl": "/wiki/Welcome"
 }

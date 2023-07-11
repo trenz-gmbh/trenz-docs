@@ -28,10 +28,6 @@
       </template>
 
       <v-list density="compact" class="on-primary bg-primary">
-        <v-list-item
-          title="Home"
-          :to="{name: 'home'}"
-        />
         <nav-tree-node v-for="(n, i) of sortedNavTree" :node="n" :key="i"/>
         <small class="sign-in-prompt" v-if="$store.state.settings.useAuth">
           <span v-if="navTreeHasHiddenNodes">Some pages may require additional permissions to view.<br/></span>
