@@ -148,6 +148,12 @@ details.table-of-contents {
     }
   }
 }
+
+blockquote {
+  padding-left: 0.5rem;
+  border-left: solid 0.25rem rgba(var(--v-border-color), var(--v-border-opacity));
+  color: rgba(var(--v-border-color), 0.6);
+}
 </style>
 
 <script lang="ts">
