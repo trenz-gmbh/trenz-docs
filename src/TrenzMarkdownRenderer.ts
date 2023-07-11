@@ -4,8 +4,6 @@ export default class TrenzMarkdownRenderer extends marked.Renderer {
     headings: {text: string, level: 1 | 2 | 3 | 4 | 5 | 6, id: string}[] = [];
 
     toc(): string {
-        if (this.headings.length < 4) return "";
-
         const table = this.renderTocLevel(0, 1).html;
         return `<details class="table-of-contents"><summary>Contents</summary>${table}</details>`;
     }
