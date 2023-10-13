@@ -8,4 +8,5 @@ export interface WebappSettings {
         baseUrl: string;
     }
     useAuth: boolean;
+    homeUrl: string;
 }
