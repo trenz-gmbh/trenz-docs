@@ -96,7 +96,6 @@ details.table-of-contents {
   display: inline-block;
 
   summary {
-    text-align: center;
     font-weight: bold;
     list-style: none;
     padding: 0 0.25rem;
@@ -141,7 +140,7 @@ details.table-of-contents {
       }
 
       &:before {
-        content: counters(item, ".") " ";
+        content: counters(item, ".") ". ";
         counter-increment: item;
         margin-right: 0.5rem;
       }
@@ -230,9 +229,21 @@ export default defineComponent({
       const opts = Object.assign({}, this.options);
       opts.renderer = renderer;
 
-      const output = marked(this.content, opts);
+      let content = this.content;
+      let toc = false;
+      if (content.includes("[[_TOC_]]")) {
+        toc = true;
+        content = content.replace("[[_TOC_]]", "<!-- [[_TOC_]] -->");
+      }
 
-      return renderer.toc() + output;
+      let rendered = marked(content, opts);
+
+      if (toc) {
+        // marked needs to have run so the renderer knows the headings -> can only replace the TOC after rendering
+        rendered = rendered.replace("<!-- [[_TOC_]] -->", renderer.toc());
+      }
+
+      return rendered;
     },
   },
 })
