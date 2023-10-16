@@ -75,6 +75,8 @@
 </template>
 
 <style lang="scss">
+@import "./fonts/Roboto/roboto";
+
 ::selection {
   background: rgba(var(--v-theme-primary), 0.9);
   color: rgba(var(--v-theme-on-primary), 0.9);
